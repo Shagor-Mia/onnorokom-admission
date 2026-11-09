@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="bn"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-container": "#e5eeff", "inverse-primary": "#bec6e0", "surface-container-highest": "#d3e4fe", "tertiary": "#000000", "on-surface-variant": "#45464d", "on-tertiary-fixed": "#2f1500", "surface-bright": "#f8f9ff", "tertiary-container": "#2f1500", "outline-variant": "#c6c6cd", "primary-fixed": "#dae2fd", "on-tertiary": "#ffffff", "error-container": "#ffdad6", "on-surface": "#0b1c30", "secondary": "#006a61", "on-secondary-fixed-variant": "#005049", "primary-fixed-dim": "#bec6e0", "surface-variant": "#d3e4fe", "on-tertiary-container": "#c76c00", "inverse-on-surface": "#eaf1ff", "tertiary-fixed-dim": "#ffb77d", "surface-dim": "#cbdbf5", "on-secondary-fixed": "#00201d", "surface": "#f8f9ff", "primary": "#000000", "surface-container-high": "#dce9ff", "on-secondary": "#ffffff", "secondary-container": "#86f2e4", "surface-container-lowest": "#ffffff", "on-error": "#ffffff", "surface-container-low": "#eff4ff", "secondary-fixed-dim": "#6bd8cb", "on-background": "#0b1c30", "primary-container": "#131b2e", "inverse-surface": "#213145", "on-primary-fixed-variant": "#3f465c", "outline": "#76777d", "surface-tint": "#565e74", "on-secondary-container": "#006f66", "on-tertiary-fixed-variant": "#6e3900", "on-primary": "#ffffff", "on-primary-container": "#7c839b", "tertiary-fixed": "#ffdcc3", "on-error-container": "#93000a", "on-primary-fixed": "#131b2e", "background": "#f8f9ff", "secondary-fixed": "#89f5e7", "error": "#ba1a1a" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "gutter-mobile": "1rem", "margin-mobile": "1rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "gutter": "1.5rem", "space-md": "1rem", "space-xl": "2.5rem", "margin": "2rem", "space-xs": "0.25rem" }, fontFamily: { "mono-metric": ["\"Inter, monospace\""], "label-md": ["\"Inter, Hind Siliguri, sans-serif\""], "headline-xl": ["\"Inter, Hind Siliguri, sans-serif\""], "headline-xl-mobile": ["\"Inter, Hind Siliguri, sans-serif\""], "headline-lg-mobile": ["\"Inter, Hind Siliguri, sans-serif\""], "label-sm": ["\"Inter, Hind Siliguri, sans-serif\""], "headline-sm": ["\"Inter, Hind Siliguri, sans-serif\""], "body-sm": ["\"Inter, Hind Siliguri, sans-serif\""], "body-lg": ["\"Inter, Hind Siliguri, sans-serif\""], "label-lg": ["\"Inter, Hind Siliguri, sans-serif\""], "headline-lg": ["\"Inter, Hind Siliguri, sans-serif\""], "headline-md": ["\"Inter, Hind Siliguri, sans-serif\""], "body-md": ["\"Inter, Hind Siliguri, sans-serif\""] }, fontSize: { "mono-metric": ["1.75rem", { "lineHeight": "2rem", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.025em", "fontWeight": "600" }], "headline-xl": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "700" }], "headline-xl-mobile": ["1.875rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg-mobile": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.015em", "fontWeight": "600" }], "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "400" }], "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }], "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "600" }], "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-on-surface min-h-screen flex flex-col antialiased"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-gutter-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><button aria-label="শ্রেণি তালিকায় ফিরুন" class="flex items-center gap-1 min-h-[44px] min-w-[44px] px-2 py-1 -ml-2 rounded-xl text-on-surface hover:bg-surface-container-high transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">arrow_back</span><span class="font-label-md text-label-md hidden sm:inline text-on-surface-variant">শ্রেণি তালিকায় ফিরুন</span></button><div class="flex flex-col"><div class="flex items-center gap-space-xs"><h1 class="font-headline-sm text-headline-sm text-on-surface truncate">নতুন শ্রেণি/শিফট</h1><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary text-on-secondary font-label-sm text-label-sm tracking-wide">অ্যাডমিন</span></div><span class="font-label-md text-label-md text-on-surface-variant sm:hidden">শ্রেণি তালিকায় ফিরুন</span></div></div><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-safe px-gutter-mobile bg-surface min-h-screen"><div class="flex flex-col w-full pb-28">
+<!-- Top Institutional Banner / Context Info -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-sm mb-space-md">
+<div class="flex items-center justify-between gap-space-xs mb-space-xs">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px] text-secondary">verified</span>
+        অ্যাডমিন প্যানেল • শিক্ষাবর্ষ ২০২৫
+      </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+        ACID লক সক্রিয়
+      </span>
+</div>
+<div class="flex items-start gap-space-xs mt-space-xs">
+<div class="w-10 h-10 rounded-xl bg-surface-container-highest flex items-center justify-center shrink-0 text-secondary">
+<span class="material-symbols-outlined text-[24px]">domain_add</span>
+</div>
+<div class="min-w-0">
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">নতুন শ্রেণি ও শিফট নিবন্ধন</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          ২০২৫ শিক্ষাবর্ষের নতুন একাডেমিক শাখা, শ্রেণি, শিফট ও মোট অনুমোদিত আসন সংখ্যা বরাদ্দ করুন।
+        </p>
+</div>
+</div>
+</section><div class="bg-error-container text-on-error-container rounded-xl p-space-md shadow-sm mb-space-md flex items-start justify-between gap-space-sm"><div class="flex items-start gap-2"><span class="material-symbols-outlined text-error text-[22px] shrink-0 mt-0.5">error</span><div><h3 class="font-label-lg text-label-lg font-bold text-error">ফর্ম ত্রুটি: ৩টি আবশ্যকীয় তথ্য অসম্পূর্ণ বা ভুল</h3><p class="font-body-sm text-body-sm text-on-surface mt-0.5">নিচের চিহ্নিত ক্ষেত্রগুলো সংশোধন না করা পর্যন্ত শ্রেণি ও শিফট নিবন্ধন সক্রিয় করা যাবে না।</p></div></div><button class="text-error p-1 rounded-lg hover:bg-error/10" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button></div>
+<!-- Step 1: Class Level & Name -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md">
+<div class="flex items-center justify-between mb-space-sm">
+<label class="font-label-lg text-label-lg text-on-surface flex items-center gap-1.5">
+<span class="w-5 h-5 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm flex items-center justify-center">১</span>
+        শ্রেণি স্তর ও নাম (Class Level &amp; Name)
+        <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-error flex items-center gap-1 font-semibold"><span class="material-symbols-outlined text-[14px]">cancel</span>অনুপযুক্ত বিন্যাস</span>
+</div>
+<div class="relative mb-space-sm"><input class="w-full h-12 bg-error-container/30 text-error font-body-md text-body-md rounded-xl px-space-md pr-11 focus:outline-none ring-2 ring-error" id="class-name-input" placeholder="শ্রেণির নাম লিখুন..." type="text" value="৬ষ্ঠ শ্রেণি"/><div class="absolute right-3 top-3 text-error flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">error</span></div></div><div class="flex items-center gap-1 text-error font-label-sm text-label-sm mb-space-sm"><span class="material-symbols-outlined text-[16px]">warning</span><span>শ্রেণি ও শাখার এই বিন্যাস ইতিমধ্যে সক্রিয় রয়েছে (Duplicate Conflict)</span></div>
+<!-- Quick selector chips -->
+<div class="mb-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1.5">দ্রুত নির্বাচন (Quick Select):</span>
+<div class="flex flex-wrap gap-1.5" id="class-pills">
+<button class="class-pill px-3 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md flex items-center gap-1 min-h-[36px]" type="button">
+<span>৬ষ্ঠ শ্রেণি</span>
+<span class="material-symbols-outlined text-[14px]">done</span>
+</button>
+<button class="class-pill px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md min-h-[36px]" type="button">
+          ৭ম শ্রেণি
+        </button>
+<button class="class-pill px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md min-h-[36px]" type="button">
+          ৮ম শ্রেণি
+        </button>
+<button class="class-pill px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md min-h-[36px]" type="button">
+          ৯ম (বিজ্ঞান)
+        </button>
+<button class="class-pill px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md min-h-[36px]" type="button">
+          ১০ম শ্রেণি
+        </button>
+</div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-space-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+      শ্রেণির নাম স্পষ্ট রাখুন, এটি অভিভাবক পোর্টাল ও প্রবেশপত্রে প্রদর্শিত হবে।
+    </p>
+</section>
+<!-- Step 2: Select Shift -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md">
+<label class="font-label-lg text-label-lg text-on-surface flex items-center gap-1.5 mb-space-sm">
+<span class="w-5 h-5 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm flex items-center justify-center">২</span>
+      শিফট নির্বাচন (Shift Selection)
+      <span class="text-error">*</span>
+</label>
+<div class="flex flex-col gap-space-sm" id="shift-group"><div class="shift-card bg-surface-container rounded-xl p-space-md cursor-pointer transition-all border border-transparent hover:border-error/40" id="shift-morning"><div class="flex items-center justify-between mb-1"><div class="flex items-center gap-2"><span class="text-xl">🌅</span><div><h3 class="font-headline-sm text-body-lg text-on-surface font-semibold">প্রভাতি শিফট (Morning Shift)</h3><span class="font-label-sm text-label-sm text-on-surface-variant">সকাল ৭:৩০ – ১১:৪৫ পূর্বাহ্ন</span></div></div><div class="w-6 h-6 rounded-full bg-surface-container-highest text-transparent flex items-center justify-center check-icon"><span class="material-symbols-outlined text-[16px]">check</span></div></div><p class="font-body-sm text-body-sm text-on-surface-variant pl-7">প্রাথমিক ও নিম্ন-মাধ্যমিক শিক্ষার্থীদের উপযোগী সময়সূচি।</p></div><div class="shift-card bg-surface-container rounded-xl p-space-md cursor-pointer transition-all border border-transparent hover:border-error/40" id="shift-day"><div class="flex items-center justify-between mb-1"><div class="flex items-center gap-2"><span class="text-xl">☀️</span><div><h3 class="font-headline-sm text-body-lg text-on-surface font-semibold">দিবা শিফট (Day Shift)</h3><span class="font-label-sm text-label-sm text-on-surface-variant">দুপুর ১২:১৫ – বিকাল ৪:৩০ অপরাহ্ন</span></div></div><div class="w-6 h-6 rounded-full bg-surface-container-highest text-transparent flex items-center justify-center check-icon"><span class="material-symbols-outlined text-[16px]">check</span></div></div><p class="font-body-sm text-body-sm text-on-surface-variant pl-7">মাধ্যমিক ও উচ্চ-মাধ্যমিক স্তরের নিয়মিত পাঠদান সেশন।</p></div></div>
+</section>
+<!-- Step 3: Medium & Section -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md"><div class="flex items-center justify-between mb-space-xs"><label class="font-label-lg text-label-lg text-on-surface flex items-center gap-1.5"><span class="w-5 h-5 rounded-full bg-error text-on-error font-label-sm text-label-sm flex items-center justify-center">৪</span>মোট আসন সংখ্যা (Seat Capacity)<span class="text-error">*</span></label><span class="font-label-sm text-label-sm text-error font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">warning</span>সীমা অতিক্রম করেছে (সর্বোচ্চ ২০০ আসন অনুমোদিত)</span></div><div class="bg-error-container/20 rounded-xl p-space-sm flex items-center justify-between mb-space-sm ring-1 ring-error"><button aria-label="কমান" class="w-12 h-12 rounded-xl bg-surface-container-highest text-on-surface flex items-center justify-center text-xl font-bold active:scale-95 transition-transform" id="btn-decrement" type="button"><span class="material-symbols-outlined text-[24px]">remove</span></button><div class="flex flex-col items-center"><div class="flex items-baseline gap-1"><span class="font-mono-metric text-mono-metric text-error tracking-tight" id="capacity-display">২১৫</span><span class="font-label-md text-label-md text-error font-medium">টি আসন</span></div><span class="font-label-sm text-label-sm text-error font-medium">অননুমোদিত অতিরিক্ত আসন সংখ্যা</span></div><button aria-label="বাড়ান" class="w-12 h-12 rounded-xl bg-error text-on-error flex items-center justify-center text-xl font-bold opacity-60 cursor-not-allowed" disabled="" id="btn-increment" type="button"><span class="material-symbols-outlined text-[24px]">add</span></button></div><div class="bg-surface-container rounded-xl p-space-sm mb-space-xs border border-error/30"><div class="flex items-center justify-between mb-1.5"><span class="font-label-sm text-label-sm text-error font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">sync_problem</span>মাউশি কোটা বরাদ্দ বিশ্লেষণ (অননুমোদিত বিভাজন)</span><span class="font-label-sm text-label-sm text-error font-bold" id="total-badge">২১৫ টি (অসামঞ্জস্যপূর্ণ)</span></div><div class="w-full h-3 rounded-full bg-error-container flex overflow-hidden mb-space-sm"><div class="h-full bg-error" style="width: 100%" title="কোটা বণ্টন স্থগিত"></div></div><div class="p-2 rounded-lg bg-surface-container-lowest text-center text-error font-label-sm text-label-sm flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">info</span><span>আসন সংখ্যা ২০০ বা তার কম হলে স্বয়ংক্রিয় কোটা অনুপাত সমন্বিত হবে</span></div></div></section>
+<!-- Step 4: Seat Capacity & DSHE Quota Breakdown -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<label class="font-label-lg text-label-lg text-on-surface flex items-center gap-1.5">
+<span class="w-5 h-5 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm flex items-center justify-center">৪</span>
+        মোট আসন সংখ্যা (Seat Capacity)
+        <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-on-surface-variant">অনুমোদন সীমা: ২০ - ২০০</span>
+</div>
+<!-- Stepper Component -->
+<div class="bg-surface-container-low rounded-xl p-space-sm flex items-center justify-between mb-space-sm">
+<button aria-label="কমান" class="w-12 h-12 rounded-xl bg-surface-container-highest text-on-surface flex items-center justify-center text-xl font-bold active:scale-95 transition-transform" id="btn-decrement" type="button">
+<span class="material-symbols-outlined text-[24px]">remove</span>
+</button>
+<div class="flex flex-col items-center">
+<div class="flex items-baseline gap-1">
+<span class="font-mono-metric text-mono-metric text-on-surface tracking-tight" id="capacity-display">১২০</span>
+<span class="font-label-md text-label-md text-on-surface-variant">টি আসন</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">অনুমোদিত পূর্ণাঙ্গ ব্যাচ</span>
+</div>
+<button aria-label="বাড়ান" class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center text-xl font-bold active:scale-95 transition-transform" id="btn-increment" type="button">
+<span class="material-symbols-outlined text-[24px]">add</span>
+</button>
+</div>
+<!-- DSHE Quota Visual Segmented Bar -->
+<div class="bg-surface-container rounded-xl p-space-sm mb-space-xs">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">pie_chart</span>
+          মাউশি কোটা বরাদ্দ বিশ্লেষণ (DSHE 2025)
+        </span>
+<span class="font-label-sm text-label-sm text-secondary font-bold" id="total-badge">১২০ টি (১০০%)</span>
+</div>
+<!-- Segmented Bar -->
+<div class="w-full h-3 rounded-full bg-surface-container-highest flex overflow-hidden mb-space-sm">
+<div class="h-full bg-primary" style="width: 80%" title="সাধারণ কোটা ৮০%"></div>
+<div class="h-full bg-secondary" style="width: 15%" title="মুক্তিযোদ্ধা কোটা ১৫%"></div>
+<div class="h-full bg-tertiary-fixed-dim" style="width: 5%" title="বিশেষ কোটা ৫%"></div>
+</div>
+<!-- Legend & Counts -->
+<div class="grid grid-cols-3 gap-1">
+<div class="bg-surface-container-lowest p-2 rounded-lg text-center shadow-sm">
+<div class="flex items-center justify-center gap-1 mb-0.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">সাধারণ</span>
+</div>
+<span class="font-mono-metric text-label-lg font-bold text-on-surface" id="quota-gen">৯৬</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">(৮০%)</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg text-center shadow-sm">
+<div class="flex items-center justify-center gap-1 mb-0.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">মুক্তিযোদ্ধা</span>
+</div>
+<span class="font-mono-metric text-label-lg font-bold text-secondary" id="quota-ff">১৮</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">(১৫%)</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg text-center shadow-sm">
+<div class="flex items-center justify-center gap-1 mb-0.5">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">বিশেষ</span>
+</div>
+<span class="font-mono-metric text-label-lg font-bold text-on-tertiary-container" id="quota-sp">৬</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">(৫%)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Step 5: Campus Allocation & Teacher (Optional) -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md"><div class="flex items-center justify-between mb-space-xs"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-error">error_outline</span><h3 class="font-label-lg text-label-lg text-on-surface">সারসংক্ষেপ প্রাকদর্শন (Live Preview)</h3></div><span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-error-container text-error font-semibold">কনফিগারেশন অসম্পূর্ণ</span></div><div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-error/30"><div class="flex items-start justify-between mb-2"><div><h4 class="font-headline-sm text-headline-sm text-on-surface-variant line-through font-semibold" id="preview-title">৬ষ্ঠ শ্রেণি — শিফট অনির্ধারিত</h4><span class="font-label-md text-label-md text-error font-medium" id="preview-badge">শ্রেণি ও শাখার দ্বন্দ্ব • শিফট অনুপস্থিত</span></div><span class="px-2 py-1 rounded-md bg-error-container text-error font-mono-metric text-label-sm font-bold">বাতিলযোগ্য</span></div><div class="p-2.5 rounded-lg bg-error-container/20 border border-error/30 space-y-1.5 mb-2"><div class="flex items-center gap-1.5 text-error font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px]">cancel</span><span>৬ষ্ঠ শ্রেণির 'ক শাখা' পূর্বেই বিদ্যমান (ডুপ্লিকেট ত্রুটি)</span></div><div class="flex items-center gap-1.5 text-error font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px]">cancel</span><span>কোনো শিফট নির্বাচন করা হয়নি</span></div><div class="flex items-center gap-1.5 text-error font-label-sm text-label-sm"><span class="material-symbols-outlined text-[16px]">cancel</span><span>আসন সংখ্যা অনুমোদিত সীমা (২০০) অতিক্রম করেছে</span></div></div><div class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant"><span class="material-symbols-outlined text-[16px] text-error">gpp_bad</span><span class="truncate text-error">নিবন্ধন লক নিশ্চিত করতে উপরের ত্রুটিগুলো সংশোধন করুন</span></div></div></section>
+<!-- Section 6: Mobile Live Preview Card -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-sm mb-space-md">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">visibility</span>
+<h3 class="font-label-lg text-label-lg text-on-surface">সারসংক্ষেপ প্রাকদর্শন (Live Preview)</h3>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant">
+        খসড়া প্রস্তুতি
+      </span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-start justify-between mb-2">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold" id="preview-title">৬ষ্ঠ শ্রেণি — প্রভাতি শিফট</h4>
+<span class="font-label-md text-label-md text-secondary font-medium" id="preview-badge">বাংলা মাধ্যম • ক শাখা (বালক)</span>
+</div>
+<span class="px-2 py-1 rounded-md bg-secondary-container text-on-secondary-container font-mono-metric text-label-sm font-bold">
+          ২০২৫
+        </span>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-2 bg-surface-container-low rounded-lg p-2.5 mb-2">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">মোট নির্ধারিত আসন:</span>
+<span class="font-mono-metric text-body-lg text-on-surface font-bold" id="preview-seats">১২০ টি</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">আসন বণ্টন নীতি:</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">ACID FCFS লক</span>
+</div>
+</div>
+<div class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">location_on</span>
+<span class="truncate">কক্ষ ৩০২, বিজ্ঞান ভবন • মোঃ নজরুল ইসলাম</span>
+</div>
+</div>
+</section>
+<!-- Section 7: Regulatory & Security Compliance Card -->
+<section class="bg-surface-container-highest rounded-xl p-space-md mb-space-md">
+<div class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-[24px] text-secondary shrink-0 mt-0.5">policy</span>
+<div>
+<h4 class="font-label-lg text-label-lg text-on-surface font-bold">স্বয়ংক্রিয় আসন বণ্টন ও কোটা নিরীক্ষা (DSHE 2025)</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          সরকারি সিদ্ধান্ত এবং মাউশি পরিপত্র অনুযায়ী সংরক্ষিত কোটার শতকরা অনুপাত স্বয়ংক্রিয়ভাবে প্রণয়ন করা হয়েছে। সংরক্ষণ সম্পন্ন হলে নতুন আবেদনকারীদের জন্য তাৎক্ষণিক এফসিএফএস ট্রানজাকশন লকিং ইঞ্জিন চালু হবে।
+        </p>
+</div>
+</div>
+</section>
+<!-- Sticky Mobile Action Footer -->
+<footer class="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md px-gutter-mobile py-space-sm shadow-[0_-4px_12px_rgba(0,0,0,0.06)] pb-safe">
+<div class="flex flex-col gap-2 max-w-lg mx-auto w-full">
+<!-- Primary Action CTA -->
+<button class="w-full h-12 bg-surface-container-highest text-on-surface-variant/60 rounded-xl font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 cursor-not-allowed shadow-none" disabled="" id="btn-publish" type="button"><span class="material-symbols-outlined text-[20px]">lock</span><span>ত্রুটি সংশোধন করুন (Fix Errors to Publish)</span></button>
+<!-- Secondary & Cancel Actions -->
+<div class="flex items-center justify-between gap-space-sm px-1">
+<button class="flex-1 h-10 bg-surface-container-high text-on-surface rounded-xl font-label-md text-label-md font-semibold flex items-center justify-center gap-1 active:bg-surface-container-highest transition-colors" id="btn-draft" type="button">
+<span class="material-symbols-outlined text-[16px]">bookmark_border</span>
+<span>খসড়া সংরক্ষণ</span>
+</button>
+<button class="h-10 px-4 text-error font-label-md text-label-md font-semibold flex items-center justify-center gap-1 active:opacity-75 transition-opacity" onclick="history.back()" type="button">
+<span>বাতিল</span>
+</button>
+</div>
+</div>
+</footer>
+</div>
+<!-- Client-side Interactive Micro-Behaviors -->
+<script>
+  (function initClassShiftForm() {
+    let capacity = 120;
+    const minCap = 20;
+    const maxCap = 200;
+
+    const display = document.getElementById('capacity-display');
+    const previewSeats = document.getElementById('preview-seats');
+    const totalBadge = document.getElementById('total-badge');
+    const quotaGen = document.getElementById('quota-gen');
+    const quotaFF = document.getElementById('quota-ff');
+    const quotaSP = document.getElementById('quota-sp');
+
+    const toBn = (num) => {
+      const bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+      return String(num).replace(/[0-9]/g, (d) => bnDigits[d]);
+    };
+
+    function updateCapacityUI() {
+      const bnCap = toBn(capacity);
+      display.textContent = bnCap;
+      previewSeats.textContent = bnCap + ' টি';
+      totalBadge.textContent = bnCap + ' টি (১০০%)';
+
+      const gen = Math.round(capacity * 0.80);
+      const ff = Math.round(capacity * 0.15);
+      const sp = Math.max(1, capacity - gen - ff);
+
+      quotaGen.textContent = toBn(gen);
+      quotaFF.textContent = toBn(ff);
+      quotaSP.textContent = toBn(sp);
+    }
+
+    const btnDec = document.getElementById('btn-decrement');
+    const btnInc = document.getElementById('btn-increment');
+
+    if (btnDec && btnInc) {
+      btnDec.addEventListener('click', () => {
+        if (capacity > minCap) {
+          capacity -= 10;
+          if (capacity < minCap) capacity = minCap;
+          updateCapacityUI();
+        }
+      });
+
+      btnInc.addEventListener('click', () => {
+        if (capacity < maxCap) {
+          capacity += 10;
+          if (capacity > maxCap) capacity = maxCap;
+          updateCapacityUI();
+        }
+      });
+    }
+
+    // Class selection chips
+    const pills = document.querySelectorAll('.class-pill');
+    const classInput = document.getElementById('class-name-input');
+    const previewTitle = document.getElementById('preview-title');
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => {
+          p.classList.remove('bg-primary', 'text-on-primary');
+          p.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+          const check = p.querySelector('.material-symbols-outlined');
+          if (check) check.remove();
+        });
+
+        pill.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+        pill.classList.add('bg-primary', 'text-on-primary');
+        
+        const text = pill.innerText.trim();
+        classInput.value = text;
+        const currentShift = document.getElementById('shift-morning').classList.contains('bg-surface-container-low') ? 'প্রভাতি শিফট' : 'দিবা শিফট';
+        previewTitle.textContent = text + ' — ' + currentShift;
+
+        const checkIcon = document.createElement('span');
+        checkIcon.className = 'material-symbols-outlined text-[14px]';
+        checkIcon.textContent = 'done';
+        pill.appendChild(checkIcon);
+      });
+    });
+
+    if (classInput) {
+      classInput.addEventListener('input', (e) => {
+        const currentShift = document.getElementById('shift-morning').classList.contains('bg-surface-container-low') ? 'প্রভাতি শিফট' : 'দিবা শিফট';
+        previewTitle.textContent = (e.target.value.trim() || 'শ্রেণি') + ' — ' + currentShift;
+      });
+    }
+
+    // Shift selection toggling
+    const shiftMorning = document.getElementById('shift-morning');
+    const shiftDay = document.getElementById('shift-day');
+
+    function selectShift(activeEl, inactiveEl, shiftName) {
+      activeEl.classList.remove('bg-surface-container', 'opacity-80');
+      activeEl.classList.add('bg-surface-container-low');
+      const activeIcon = activeEl.querySelector('.check-icon');
+      activeIcon.classList.remove('bg-surface-container-highest', 'text-transparent');
+      activeIcon.classList.add('bg-secondary', 'text-on-secondary');
+
+      inactiveEl.classList.remove('bg-surface-container-low');
+      inactiveEl.classList.add('bg-surface-container', 'opacity-80');
+      const inactiveIcon = inactiveEl.querySelector('.check-icon');
+      inactiveIcon.classList.remove('bg-secondary', 'text-on-secondary');
+      inactiveIcon.classList.add('bg-surface-container-highest', 'text-transparent');
+
+      const currentClass = classInput ? classInput.value.trim() : '৬ষ্ঠ শ্রেণি';
+      previewTitle.textContent = currentClass + ' — ' + shiftName;
+    }
+
+    if (shiftMorning && shiftDay) {
+      shiftMorning.addEventListener('click', () => selectShift(shiftMorning, shiftDay, 'প্রভাতি শিফট'));
+      shiftDay.addEventListener('click', () => selectShift(shiftDay, shiftMorning, 'দিবা শিফট'));
+    }
+
+    // Section change update preview
+    const sectionSelect = document.getElementById('section-select');
+    const previewBadge = document.getElementById('preview-badge');
+    if (sectionSelect && previewBadge) {
+      sectionSelect.addEventListener('change', (e) => {
+        previewBadge.textContent = 'বাংলা মাধ্যম • ' + e.target.value;
+      });
+    }
+
+    // Publish Button Delight Micro-interaction
+    const btnPublish = document.getElementById('btn-publish');
+    if (btnPublish) {
+      btnPublish.addEventListener('click', () => {
+        const originalContent = btnPublish.innerHTML;
+        btnPublish.innerHTML = '<span class="material-symbols-outlined animate-spin text-[20px]">sync</span><span>সংরক্ষণ ও আসন বরাদ্দ হচ্ছে...</span>';
+        btnPublish.disabled = true;
+        setTimeout(() => {
+          btnPublish.innerHTML = '<span class="material-symbols-outlined text-[20px]">task_alt</span><span>সফলভাবে সক্রিয় হয়েছে!</span>';
+          btnPublish.classList.replace('bg-secondary', 'bg-primary');
+          setTimeout(() => {
+            btnPublish.innerHTML = originalContent;
+            btnPublish.disabled = false;
+            btnPublish.classList.replace('bg-primary', 'bg-secondary');
+          }, 2000);
+        }, 800);
+      });
+    }
+  })();
+</script></main></body></html>

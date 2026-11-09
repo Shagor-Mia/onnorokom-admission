@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html lang="bn"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;font-family:'Hind Siliguri','Inter',sans-serif;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "tertiary": "#000000", "on-primary-fixed-variant": "#3f465c", "surface-dim": "#cbdbf5", "error": "#ba1a1a", "outline": "#76777d", "on-primary": "#ffffff", "on-secondary-container": "#006f66", "inverse-on-surface": "#eaf1ff", "secondary-fixed": "#89f5e7", "secondary-container": "#86f2e4", "on-secondary-fixed-variant": "#005049", "on-surface-variant": "#45464d", "secondary": "#006a61", "on-tertiary": "#ffffff", "on-primary-fixed": "#131b2e", "on-surface": "#0b1c30", "on-tertiary-container": "#c76c00", "on-tertiary-fixed": "#2f1500", "surface": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "on-background": "#0b1c30", "primary-fixed-dim": "#bec6e0", "on-tertiary-fixed-variant": "#6e3900", "surface-container": "#e5eeff", "surface-variant": "#d3e4fe", "on-error": "#ffffff", "inverse-primary": "#bec6e0", "primary-container": "#131b2e", "on-secondary": "#ffffff", "on-primary-container": "#7c839b", "secondary-fixed-dim": "#6bd8cb", "surface-container-highest": "#d3e4fe", "tertiary-container": "#2f1500", "surface-container-lowest": "#ffffff", "surface-container-high": "#dce9ff", "surface-tint": "#565e74", "primary": "#000000", "tertiary-fixed": "#ffdcc3", "primary-fixed": "#dae2fd", "error-container": "#ffdad6", "background": "#f8f9ff", "surface-bright": "#f8f9ff", "outline-variant": "#c6c6cd", "on-secondary-fixed": "#00201d", "inverse-surface": "#213145", "on-error-container": "#93000a", "surface-container-low": "#eff4ff" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "margin-mobile": "1rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "space-xl": "2.5rem", "margin": "2rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter": "1.5rem" }, "fontFamily": { "headline-lg-mobile": ["'Inter', 'Hind Siliguri', sans-serif"], "mono-metric": ["'Inter', monospace"], "headline-xl": ["'Inter', 'Hind Siliguri', sans-serif"], "body-sm": ["'Inter', 'Hind Siliguri', sans-serif"], "body-lg": ["'Inter', 'Hind Siliguri', sans-serif"], "label-md": ["'Inter', 'Hind Siliguri', sans-serif"], "body-md": ["'Inter', 'Hind Siliguri', sans-serif"], "headline-xl-mobile": ["'Inter', 'Hind Siliguri', sans-serif"], "headline-md": ["'Inter', 'Hind Siliguri', sans-serif"], "headline-lg": ["'Inter', 'Hind Siliguri', sans-serif"], "label-lg": ["'Inter', 'Hind Siliguri', sans-serif"], "headline-sm": ["'Inter', 'Hind Siliguri', sans-serif"], "label-sm": ["'Inter', 'Hind Siliguri', sans-serif"] }, "fontSize": { "headline-lg-mobile": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.015em", "fontWeight": "600" }], "mono-metric": ["1.75rem", { "lineHeight": "2rem", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-xl": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "700" }], "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "400" }], "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }], "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.025em", "fontWeight": "600" }], "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }], "headline-xl-mobile": ["1.875rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.015em", "fontWeight": "600" }], "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "600" }], "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-primary text-on-primary px-margin-mobile py-1 flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[14px] text-secondary-fixed">support_agent</span><span class="font-label-sm text-label-sm tracking-normal">হেল্পলাইন: ১৬২৬৩ / +৮৮০ ৯৬১২-০০০০০০</span></div><span class="font-label-sm text-label-sm bg-primary-container text-on-primary-container px-space-xs rounded">সকাল ৮টা - রাত ৮টা</span></div><div class="h-20 px-margin-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><div class="w-11 h-11 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary text-[26px]">school</span></div><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">ভর্তি পোর্টাল</span><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm flex-shrink-0">২০২৫</span></div><p class="font-label-md text-label-md text-on-surface-variant truncate">Admission Catalog</p></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="Helpline" class="w-11 h-11 flex items-center justify-center rounded-lg text-secondary hover:bg-secondary-container/20" href="tel:16263"><span class="material-symbols-outlined text-[22px]">call</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-28 pb-28 px-margin-mobile bg-surface"><div class="flex flex-col w-full gap-space-md">
+<div class="bg-primary-container text-on-primary rounded-xl p-space-md shadow-md relative overflow-hidden">
+<div class="absolute -right-6 -bottom-6 w-32 h-32 bg-secondary/15 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-1.5 bg-tertiary-container text-tertiary-fixed px-2.5 py-1 rounded-full shadow-sm">
+<span class="material-symbols-outlined text-[15px] text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-label-sm text-label-sm tracking-normal">আগে আসলে আগে পাবেন (FCFS)</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container/20 text-inverse-on-surface px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px] text-secondary-fixed">verified</span>
+<span class="font-label-sm text-label-sm">শিক্ষাবর্ষ ২০২৫</span>
+</div>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-sm text-headline-sm text-surface tracking-tight">সরকারি ও স্বনামধন্য বিদ্যালয় ভর্তি</h2>
+<p class="font-body-sm text-body-sm text-surface-variant leading-relaxed">
+        প্রতিটি শ্রেণিতে সীমিত সংখ্যক শূন্য আসনে ভর্তি চলছে। আবেদন সম্পন্ন করতে শিক্ষার্থীর সঠিক ১৭-সংখ্যার জন্ম নিবন্ধন নম্বর (BRN) আবশ্যক।
+      </p>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center gap-2 text-surface-tint">
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed">timelapse</span>
+<span class="font-label-md text-label-md text-surface-bright">আসন নির্বাচন পর সাময়িক লক থাকবে মাত্র ২০ মিনিট</span>
+</div>
+</div>
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[20px]">badge</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">শিক্ষার্থী পরিচয়পত্র যাচাই</h3>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/40 px-2 py-0.5 rounded-full">ডিজিটাল ভেরিফিকেশন</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-sm">
+      অনলাইন জন্ম ও মৃত্যু নিবন্ধন ডেটাবেজ (BDRIS) অনুযায়ী শিক্ষার্থীর সঠিক তথ্য দিন।
+    </p>
+<div class="space-y-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex items-center justify-between" for="brn-input">
+<span>জন্ম নিবন্ধন নম্বর (BRN - ১৭ ডিজিট)</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm" id="brn-counter">১৭/১৭ ডিজিট</span>
+</label>
+<div class="relative flex items-center">
+<input class="w-full h-12 bg-surface-container-low text-on-surface font-mono-metric text-[1.125rem] px-3 pr-10 rounded-lg outline-none focus:bg-surface-container-lowest transition-colors shadow-inner" id="brn-input" inputmode="numeric" maxlength="17" placeholder="১৭ সংখ্যার জন্ম নিবন্ধন নম্বর লিখুন" type="tel" value="20092692544781221"/>
+<div class="absolute right-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-secondary text-[22px]" id="brn-status-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-0.5">
+<span class="font-label-md text-label-md text-secondary flex items-center gap-1" id="brn-validation-msg">
+<span class="material-symbols-outlined text-[14px]">verified_user</span>
+          বৈধ জন্ম নিবন্ধন নম্বর / Verified BRN
+        </span>
+<a class="font-label-sm text-label-sm text-secondary underline hover:text-on-secondary-container" href="tel:16263">যাচাই সমস্যা?</a>
+</div>
+</div>
+<div class="mt-space-sm bg-surface-container rounded-lg p-space-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">যাচাইকৃত শিক্ষার্থী প্রোফাইল</span>
+<span class="font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed px-2 py-0.2 rounded-full font-semibold">সক্রিয়</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-headline-sm text-headline-sm text-on-surface truncate">তাহমিদ আহমেদ সিদ্দীকী</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-mono-metric tracking-tight">২০০৯ ২৬৯ ২৫৪ ৪৭৮ **** ২১</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-space-xs">
+<button class="flex-1 h-11 bg-surface-container-high hover:bg-surface-variant text-on-surface rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-1.5 transition-all active:scale-[0.98]" id="recheck-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">cached</span>
+          পুনরায় যাচাই
+        </button>
+<button class="h-11 px-space-md bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg font-label-lg text-label-lg flex items-center justify-center gap-1 transition-all active:scale-[0.98]" id="guide-modal-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">help_outline</span>
+          সহায়িকা
+        </button>
+</div>
+</div>
+</section>
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">শ্রেণি ও শিফট ক্যাটালগ</h3>
+<p class="font-label-md text-label-md text-on-surface-variant">রিয়েল-টাইম আসন প্রাপ্যতা ও কোটা স্থিতি</p>
+</div>
+<span class="flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+        লাইভ
+      </span>
+</div>
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1" id="filter-container">
+<button class="filter-chip h-9 px-3.5 rounded-full bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center flex-shrink-0 shadow-sm active:scale-95 transition-all" data-filter="all" type="button">
+        সকল শ্রেণি
+      </button>
+<button class="filter-chip h-9 px-3.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center flex-shrink-0 hover:bg-surface-variant active:scale-95 transition-all" data-filter="morning" type="button">
+        প্রভাতি শিফট
+      </button>
+<button class="filter-chip h-9 px-3.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center flex-shrink-0 hover:bg-surface-variant active:scale-95 transition-all" data-filter="day" type="button">
+        দিবা শিফট
+      </button>
+<button class="filter-chip h-9 px-3.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center flex-shrink-0 hover:bg-surface-variant active:scale-95 transition-all" data-filter="available-only" type="button">
+        শুধু খালি আসন
+      </button>
+</div>
+<div class="space-y-space-sm" id="class-cards-list">
+<div class="class-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm" data-shift="morning" data-status="available">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="space-y-0.5">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">৬ষ্ঠ শ্রেণি — প্রভাতি</h4>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">বাংলা মাধ্যম</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">বালক ও বালিকা যৌথ শাখা • প্রভাতি (০৭:৩০ - ১১:৪৫)</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex-shrink-0">
+            ১৫ আসন বাকি
+          </span>
+</div>
+<div class="grid grid-cols-4 gap-1.5 bg-surface-container-low p-2 rounded-lg text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">মোট</span>
+<span class="font-mono-metric text-[1.125rem] text-on-surface">১২০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-tertiary-fixed-variant">সংরক্ষিত</span>
+<span class="font-mono-metric text-[1.125rem] text-tertiary-container">২৫</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-secondary">নিশ্চিত</span>
+<span class="font-mono-metric text-[1.125rem] text-secondary">৮০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface font-semibold">খালি</span>
+<span class="font-mono-metric text-[1.125rem] text-secondary font-bold">১৫</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>ধারণক্ষমতা পূরণ</span>
+<span class="font-semibold text-on-surface">৮৭%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 87.5%"></div>
+</div>
+</div>
+<div class="pt-space-xs">
+<button class="w-full h-12 bg-secondary hover:bg-on-secondary-container text-on-secondary rounded-lg font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]" type="button">
+<span>আবেদন করুন</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="class-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm" data-shift="day" data-status="available">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="space-y-0.5">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">৬ষ্ঠ শ্রেণি — দিবা</h4>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">বাংলা মাধ্যম</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">বালক ও বালিকা যৌথ শাখা • দিবা (১২:১৫ - ০৫:০০)</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex-shrink-0">
+            ৩৫ আসন বাকি
+          </span>
+</div>
+<div class="grid grid-cols-4 gap-1.5 bg-surface-container-low p-2 rounded-lg text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">মোট</span>
+<span class="font-mono-metric text-[1.125rem] text-on-surface">১২০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-tertiary-fixed-variant">সংরক্ষিত</span>
+<span class="font-mono-metric text-[1.125rem] text-tertiary-container">১৫</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-secondary">নিশ্চিত</span>
+<span class="font-mono-metric text-[1.125rem] text-secondary">৭০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface font-semibold">খালি</span>
+<span class="font-mono-metric text-[1.125rem] text-secondary font-bold">৩৫</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>ধারণক্ষমতা পূরণ</span>
+<span class="font-semibold text-on-surface">৭১%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 71%"></div>
+</div>
+</div>
+<div class="pt-space-xs">
+<button class="w-full h-12 bg-secondary hover:bg-on-secondary-container text-on-secondary rounded-lg font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]" type="button">
+<span>আবেদন করুন</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="class-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm opacity-90" data-shift="morning" data-status="full">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="space-y-0.5">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">৭ম শ্রেণি — প্রভাতি</h4>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">সাধারণ</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">প্রভাতি শাখা • নির্ধারিত সময়সূচি</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold flex-shrink-0">
+            আসন পূর্ণ
+          </span>
+</div>
+<div class="grid grid-cols-4 gap-1.5 bg-surface-container-low p-2 rounded-lg text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">মোট</span>
+<span class="font-mono-metric text-[1.125rem] text-on-surface">১০০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-tertiary-fixed-variant">সংরক্ষিত</span>
+<span class="font-mono-metric text-[1.125rem] text-tertiary-container">২০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-secondary">নিশ্চিত</span>
+<span class="font-mono-metric text-[1.125rem] text-secondary">৮০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface font-semibold">খালি</span>
+<span class="font-mono-metric text-[1.125rem] text-error font-bold">০</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>ধারণক্ষমতা পূরণ</span>
+<span class="font-semibold text-error">১০০%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<div class="pt-space-xs">
+<button class="w-full h-12 bg-surface-container-high text-outline cursor-not-allowed rounded-lg font-label-lg text-label-lg font-semibold flex items-center justify-center gap-1.5" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+<span>আসন পূর্ণ (Full)</span>
+</button>
+</div>
+</div>
+<div class="class-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm" data-shift="morning" data-status="available">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="space-y-0.5">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">৮ম শ্রেণি — প্রভাতি</h4>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">বিজ্ঞান ও মানবিক</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">প্রভাতি শাখা • নতুন পাঠ্যক্রম</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex-shrink-0">
+            ২২ আসন বাকি
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-2 bg-surface-container-low p-2 rounded-lg text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">মোট আসন</span>
+<span class="font-mono-metric text-[1.125rem] text-on-surface">৮০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-secondary font-semibold">বর্তমানে খালি</span>
+<span class="font-mono-metric text-[1.125rem] text-secondary font-bold">২২</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>ধারণক্ষমতা পূরণ</span>
+<span class="font-semibold text-on-surface">৭২.৫%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 72.5%"></div>
+</div>
+</div>
+<div class="pt-space-xs">
+<button class="w-full h-12 bg-secondary hover:bg-on-secondary-container text-on-secondary rounded-lg font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]" type="button">
+<span>আবেদন করুন</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="class-card bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm" data-shift="day" data-status="available">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="space-y-0.5">
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">৯ম শ্রেণি — বিজ্ঞান (দিবা)</h4>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm">বিজ্ঞান বিভাগ</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">দিবা শাখা • উচ্চতর গণিত ও পদার্থবিজ্ঞান ল্যাব</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-semibold flex-shrink-0">
+            ১০ আসন বাকি
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-2 bg-surface-container-low p-2 rounded-lg text-center">
+<div>
+<span class="block font-label-sm text-label-sm text-on-surface-variant">মোট আসন</span>
+<span class="font-mono-metric text-[1.125rem] text-on-surface">১০০</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm text-secondary font-semibold">বর্তমানে খালি</span>
+<span class="font-mono-metric text-[1.125rem] text-secondary font-bold">১০</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>ধারণক্ষমতা পূরণ</span>
+<span class="font-semibold text-on-surface">৯০%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 90%"></div>
+</div>
+</div>
+<div class="pt-space-xs">
+<button class="w-full h-12 bg-secondary hover:bg-on-secondary-container text-on-secondary rounded-lg font-label-lg text-label-lg font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]" type="button">
+<span>আবেদন করুন</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between cursor-pointer select-none" id="resilience-toggle">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[20px]">troubleshoot</span>
+<h4 class="font-label-lg text-label-lg text-on-surface">সিস্টেম স্থিতিস্থাপকতা ও প্রিভিউ মোড</h4>
+</div>
+<span class="material-symbols-outlined text-outline transition-transform duration-200" id="resilience-chevron">expand_more</span>
+</div>
+<div class="hidden space-y-space-sm pt-space-xs" id="resilience-content">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        উচ্চ ট্রাফিক এবং চরম লোডে পোর্টালের আচরণ যাচাইয়ের জন্য বিভিন্ন টেস্ট প্রিভিউ স্টেট দেখুন:
+      </p>
+<div class="grid grid-cols-3 gap-1.5">
+<button class="h-10 px-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded font-label-sm text-label-sm flex items-center justify-center gap-1 active:scale-95 transition-all" id="btn-state-skeleton" type="button">
+<span class="material-symbols-outlined text-[15px]">motion_photos_on</span>
+          স্কেলিটন লোড
+        </button>
+<button class="h-10 px-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded font-label-sm text-label-sm flex items-center justify-center gap-1 active:scale-95 transition-all" id="btn-state-error" type="button">
+<span class="material-symbols-outlined text-[15px]">cloud_off</span>
+          নেটওয়ার্ক ৫০৩
+        </button>
+<button class="h-10 px-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded font-label-sm text-label-sm flex items-center justify-center gap-1 active:scale-95 transition-all" id="btn-state-empty" type="button">
+<span class="material-symbols-outlined text-[15px]">inbox</span>
+          শূন্য তালিকা
+        </button>
+</div>
+<div class="bg-surface-container-lowest rounded-lg p-space-sm" id="preview-panel-container">
+<div class="text-center py-space-sm text-on-surface-variant font-label-md text-label-md" id="preview-default">
+          উপরের বোতামগুলো চেপে লাইভ ফলব্যাক রেসপন্স পরীক্ষা করুন।
+        </div>
+<div class="hidden space-y-2.5 animate-pulse" id="preview-skeleton">
+<div class="h-4 bg-surface-container-high rounded w-2/3"></div>
+<div class="h-8 bg-surface-container-high rounded w-full"></div>
+<div class="h-2 bg-surface-container-high rounded w-5/6"></div>
+<div class="h-10 bg-surface-container-high rounded w-full"></div>
+</div>
+<div class="hidden text-center py-space-sm space-y-1.5" id="preview-error">
+<span class="material-symbols-outlined text-error text-[32px]">wifi_off</span>
+<p class="font-headline-sm text-headline-sm text-error">সার্ভার সংযোগ ব্যাহত (503 Service Unavailable)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">মুহূর্তে প্রচুর ট্রাফিকের কারণে সংযোগ স্থগিত রয়েছে। ৩০ সেকেন্ড পর পুনরায় চেষ্টা করুন।</p>
+<button class="h-9 px-4 bg-primary text-on-primary rounded font-label-md text-label-md inline-flex items-center gap-1 mt-1" onclick="document.getElementById('preview-panel-container').scrollIntoView()" type="button">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+            পুনরায় লোড করুন
+          </button>
+</div>
+<div class="hidden text-center py-space-sm space-y-1.5" id="preview-empty">
+<span class="material-symbols-outlined text-outline text-[32px]">folder_off</span>
+<p class="font-headline-sm text-headline-sm text-on-surface">কোনো আবেদনযোগ্য আসন অবশিষ্ট নেই</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">আপনার নির্বাচিত ফিল্টারে কোনো শূন্য আসন পাওয়া যায়নি। অন্যান্য শিফট দেখুন।</p>
+</div>
+</div>
+</div>
+</section>
+<div class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm hidden items-center justify-center p-space-md" id="guide-modal">
+<div class="bg-surface-container-lowest text-on-surface rounded-xl p-space-md max-w-sm w-full shadow-2xl space-y-space-sm">
+<div class="flex items-center justify-between">
+<h4 class="font-headline-sm text-headline-sm">ভর্তি নির্দেশিকা ও নিয়মাবলী</h4>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" id="close-guide-btn" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="space-y-2 text-on-surface-variant font-body-sm text-body-sm max-h-72 overflow-y-auto pr-1">
+<p>১. সরকারি বিধি মোতাবেক প্রতিটি শ্রেণিতে শিক্ষার্থী জন্ম নিবন্ধন তথ্য BDRIS হতে বাধ্যতামূলক ভেরিফাই হতে হবে।</p>
+<p>২. আবেদন করার পর ২০ মিনিটের মধ্যে মোবাইল ব্যাংকিং বা কার্ডের মাধ্যমে ফি পরিশোধ করে আসন নিশ্চিত করুন।</p>
+<p>৩. নির্দিষ্ট সময়ে ফি পরিশোধ না করলে সাময়িক লককৃত আসনটি স্বয়ংক্রিয়ভাবে পুনরায় উন্মুক্ত হবে।</p>
+</div>
+<button class="w-full h-11 bg-primary text-on-primary rounded-lg font-label-lg text-label-lg font-semibold active:scale-[0.98]" id="guide-confirm-btn" type="button">
+        বুঝেছি (Close)
+      </button>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const brnInput = document.getElementById('brn-input');
+    const brnCounter = document.getElementById('brn-counter');
+    const brnStatusIcon = document.getElementById('brn-status-icon');
+    const brnValidationMsg = document.getElementById('brn-validation-msg');
+    const recheckBtn = document.getElementById('recheck-btn');
+
+    if (brnInput) {
+      brnInput.addEventListener('input', function(e) {
+        const value = e.target.value.replace(/\D/g, '');
+        e.target.value = value;
+        const len = value.length;
+        
+        brnCounter.textContent = `${len}/১৭ ডিজিট`;
+
+        if (len === 17) {
+          brnStatusIcon.textContent = 'check_circle';
+          brnStatusIcon.className = 'material-symbols-outlined text-secondary text-[22px]';
+          brnValidationMsg.className = 'font-label-md text-label-md text-secondary flex items-center gap-1';
+          brnValidationMsg.innerHTML = '<span class="material-symbols-outlined text-[14px]">verified_user</span> বৈধ জন্ম নিবন্ধন নম্বর / Verified BRN';
+        } else {
+          brnStatusIcon.textContent = 'error';
+          brnStatusIcon.className = 'material-symbols-outlined text-error text-[22px]';
+          brnValidationMsg.className = 'font-label-md text-label-md text-error flex items-center gap-1';
+          brnValidationMsg.innerHTML = `<span class="material-symbols-outlined text-[14px]">warning</span> ১৭ ডিজিট আবশ্যক (${len}/১৭)`;
+        }
+      });
+    }
+
+    if (recheckBtn) {
+      recheckBtn.addEventListener('click', function() {
+        const prevText = recheckBtn.innerHTML;
+        recheckBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">sync</span> যাচাই হচ্ছে...';
+        setTimeout(function() {
+          recheckBtn.innerHTML = prevText;
+          if (brnInput) {
+            brnInput.value = '20092692544781221';
+            brnCounter.textContent = '১৭/১৭ ডিজিট';
+            brnStatusIcon.textContent = 'check_circle';
+            brnStatusIcon.className = 'material-symbols-outlined text-secondary text-[22px]';
+            brnValidationMsg.className = 'font-label-md text-label-md text-secondary flex items-center gap-1';
+            brnValidationMsg.innerHTML = '<span class="material-symbols-outlined text-[14px]">verified_user</span> ডেটাবেজ হতে হালনাগাদ সম্পন্ন';
+          }
+        }, 700);
+      });
+    }
+
+    const filterChips = document.querySelectorAll('.filter-chip');
+    const classCards = document.querySelectorAll('.class-card');
+
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', function() {
+        filterChips.forEach(c => {
+          c.classList.remove('bg-primary', 'text-on-primary');
+          c.classList.add('bg-surface-container-high', 'text-on-surface');
+        });
+        this.classList.remove('bg-surface-container-high', 'text-on-surface');
+        this.classList.add('bg-primary', 'text-on-primary');
+
+        const filter = this.getAttribute('data-filter');
+
+        classCards.forEach(card => {
+          const shift = card.getAttribute('data-shift');
+          const status = card.getAttribute('data-status');
+
+          if (filter === 'all') {
+            card.classList.remove('hidden');
+          } else if (filter === 'morning') {
+            card.classList.toggle('hidden', shift !== 'morning');
+          } else if (filter === 'day') {
+            card.classList.toggle('hidden', shift !== 'day');
+          } else if (filter === 'available-only') {
+            card.classList.toggle('hidden', status !== 'available');
+          }
+        });
+      });
+    });
+
+    const resilienceToggle = document.getElementById('resilience-toggle');
+    const resilienceContent = document.getElementById('resilience-content');
+    const resilienceChevron = document.getElementById('resilience-chevron');
+
+    if (resilienceToggle) {
+      resilienceToggle.addEventListener('click', function() {
+        const isHidden = resilienceContent.classList.contains('hidden');
+        resilienceContent.classList.toggle('hidden');
+        resilienceChevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
+    }
+
+    const previewDefault = document.getElementById('preview-default');
+    const previewSkeleton = document.getElementById('preview-skeleton');
+    const previewError = document.getElementById('preview-error');
+    const previewEmpty = document.getElementById('preview-empty');
+
+    function resetPreviews() {
+      previewDefault.classList.add('hidden');
+      previewSkeleton.classList.add('hidden');
+      previewError.classList.add('hidden');
+      previewEmpty.classList.add('hidden');
+    }
+
+    const btnSkeleton = document.getElementById('btn-state-skeleton');
+    const btnError = document.getElementById('btn-state-error');
+    const btnEmpty = document.getElementById('btn-state-empty');
+
+    if (btnSkeleton) {
+      btnSkeleton.addEventListener('click', function() {
+        resetPreviews();
+        previewSkeleton.classList.remove('hidden');
+      });
+    }
+    if (btnError) {
+      btnError.addEventListener('click', function() {
+        resetPreviews();
+        previewError.classList.remove('hidden');
+      });
+    }
+    if (btnEmpty) {
+      btnEmpty.addEventListener('click', function() {
+        resetPreviews();
+        previewEmpty.classList.remove('hidden');
+      });
+    }
+
+    const guideModal = document.getElementById('guide-modal');
+    const guideBtn = document.getElementById('guide-modal-btn');
+    const closeGuideBtn = document.getElementById('close-guide-btn');
+    const guideConfirmBtn = document.getElementById('guide-confirm-btn');
+
+    function openModal() {
+      if (guideModal) {
+        guideModal.classList.remove('hidden');
+        guideModal.classList.add('flex');
+      }
+    }
+    function closeModal() {
+      if (guideModal) {
+        guideModal.classList.add('hidden');
+        guideModal.classList.remove('flex');
+      }
+    }
+
+    if (guideBtn) guideBtn.addEventListener('click', openModal);
+    if (closeGuideBtn) closeGuideBtn.addEventListener('click', closeModal);
+    if (guideConfirmBtn) guideConfirmBtn.addEventListener('click', closeModal);
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.06)]" data-active-classes="text-secondary font-semibold"><div class="h-16 px-gutter-mobile flex items-center justify-around"><a aria-current="page" class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-secondary font-semibold" data-path="admission-catalog" href="#"><span class="material-symbols-outlined text-[22px]">grid_view</span><span class="font-label-sm text-label-sm">ক্যাটালগ</span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-on-surface-variant hover:text-on-surface" data-path="seat-status" href="#"><span class="material-symbols-outlined text-[22px]">event_seat</span><span class="font-label-sm text-label-sm">আসন স্থিতি</span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-on-surface-variant hover:text-on-surface" data-path="my-applications" href="#"><span class="material-symbols-outlined text-[22px]">description</span><span class="font-label-sm text-label-sm">আবেদনসমূহ</span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-on-surface-variant hover:text-on-surface" data-path="admin-inventory" href="#"><span class="material-symbols-outlined text-[22px]">admin_panel_settings</span><span class="font-label-sm text-label-sm">অ্যাডমিন</span></a></div></nav></body></html>

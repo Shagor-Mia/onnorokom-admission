@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html lang="bn"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;font-family:'Hind Siliguri','Inter',sans-serif;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "tertiary": "#000000", "on-primary-fixed-variant": "#3f465c", "surface-dim": "#cbdbf5", "error": "#ba1a1a", "outline": "#76777d", "on-primary": "#ffffff", "on-secondary-container": "#006f66", "inverse-on-surface": "#eaf1ff", "secondary-fixed": "#89f5e7", "secondary-container": "#86f2e4", "on-secondary-fixed-variant": "#005049", "on-surface-variant": "#45464d", "secondary": "#006a61", "on-tertiary": "#ffffff", "on-primary-fixed": "#131b2e", "on-surface": "#0b1c30", "on-tertiary-container": "#c76c00", "on-tertiary-fixed": "#2f1500", "surface": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "on-background": "#0b1c30", "primary-fixed-dim": "#bec6e0", "on-tertiary-fixed-variant": "#6e3900", "surface-container": "#e5eeff", "surface-variant": "#d3e4fe", "on-error": "#ffffff", "inverse-primary": "#bec6e0", "primary-container": "#131b2e", "on-secondary": "#ffffff", "on-primary-container": "#7c839b", "secondary-fixed-dim": "#6bd8cb", "surface-container-highest": "#d3e4fe", "tertiary-container": "#2f1500", "surface-container-lowest": "#ffffff", "surface-container-high": "#dce9ff", "surface-tint": "#565e74", "primary": "#000000", "tertiary-fixed": "#ffdcc3", "primary-fixed": "#dae2fd", "error-container": "#ffdad6", "background": "#f8f9ff", "surface-bright": "#f8f9ff", "outline-variant": "#c6c6cd", "on-secondary-fixed": "#00201d", "inverse-surface": "#213145", "on-error-container": "#93000a", "surface-container-low": "#eff4ff" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "margin-mobile": "1rem", "gutter-mobile": "1rem", "space-xs": "0.25rem", "space-xl": "2.5rem", "margin": "2rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter": "1.5rem" }, "fontFamily": { "headline-lg-mobile": ["'Inter', 'Hind Siliguri', sans-serif"], "mono-metric": ["'Inter', monospace"], "headline-xl": ["'Inter', 'Hind Siliguri', sans-serif"], "body-sm": ["'Inter', 'Hind Siliguri', sans-serif"], "body-lg": ["'Inter', 'Hind Siliguri', sans-serif"], "label-md": ["'Inter', 'Hind Siliguri', sans-serif"], "body-md": ["'Inter', 'Hind Siliguri', sans-serif"], "headline-xl-mobile": ["'Inter', 'Hind Siliguri', sans-serif"], "headline-md": ["'Inter', 'Hind Siliguri', sans-serif"], "headline-lg": ["'Inter', 'Hind Siliguri', sans-serif"], "label-lg": ["'Inter', 'Hind Siliguri', sans-serif"], "headline-sm": ["'Inter', 'Hind Siliguri', sans-serif"], "label-sm": ["'Inter', 'Hind Siliguri', sans-serif"] }, "fontSize": { "headline-lg-mobile": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.015em", "fontWeight": "600" }], "mono-metric": ["1.75rem", { "lineHeight": "2rem", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-xl": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "700" }], "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "400" }], "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }], "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.025em", "fontWeight": "600" }], "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }], "headline-xl-mobile": ["1.875rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-md": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.015em", "fontWeight": "600" }], "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "600" }], "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="bg-primary text-on-primary px-margin-mobile py-1 flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[14px] text-secondary-fixed">support_agent</span><span class="font-label-sm text-label-sm tracking-normal">হেল্পলাইন: ১৬২৬৩ / +৮৮০ ৯৬১২-০০০০০০</span></div><span class="font-label-sm text-label-sm bg-primary-container text-on-primary-container px-space-xs rounded">সকাল ৮টা - রাত ৮টা</span></div><div class="h-20 px-margin-mobile flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><div class="w-11 h-11 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary text-[26px]">school</span></div><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight">ভর্তি পোর্টাল</span><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm flex-shrink-0">২০২৫</span></div><p class="font-label-md text-label-md text-on-surface-variant truncate">Admin Inventory</p></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><a aria-label="Helpline" class="w-11 h-11 flex items-center justify-center rounded-lg text-secondary hover:bg-secondary-container/20" href="tel:16263"><span class="material-symbols-outlined text-[22px]">call</span></a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-28 pb-28 px-margin-mobile bg-surface"><div class="flex flex-col w-full gap-space-md">
+<!-- Admin Mobile Top Bar & Switcher -->
+<div class="bg-primary text-on-primary rounded-xl p-space-sm shadow-md flex items-center justify-between">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed animate-pulse flex-shrink-0"></div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider truncate">অ্যাডমিন প্যানেল • ২০২৫ সেশন</span>
+<span class="font-label-md text-label-md text-on-primary truncate">লাইভ সিঙ্ক চালু (Live Sync)</span>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary px-space-sm py-1.5 rounded-lg flex items-center gap-1 text-label-sm font-label-sm shadow-sm hover:opacity-90 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary-fixed">swap_horiz</span>
+<span>অভিভাবক ভিউ</span>
+</button>
+</div>
+<!-- Operational Engine & Integrity Status -->
+<div class="bg-surface-container-high text-on-surface rounded-xl p-space-sm flex items-center justify-between gap-space-xs shadow-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-8 h-8 rounded-lg bg-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container text-[18px]">verified_user</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm font-semibold text-secondary truncate">ACID লক সার্ভিস সক্রিয়</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">PostgreSQL FCFS রিয়েলটাইম সিট প্রটেকশন</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-lowest text-secondary font-semibold flex-shrink-0 shadow-sm">৯৯.৯% আপটাইম</span>
+</div>
+<!-- Aggregate Capacity Visual & Progress -->
+<div class="bg-surface-container-lowest text-on-surface rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">সার্বিক ভর্তি অগ্রগতি</span>
+<div class="flex items-baseline gap-1.5">
+<span class="font-mono-metric text-mono-metric text-primary">৬৯.৫%</span>
+<span class="font-label-md text-label-md text-secondary font-semibold">ভর্তি সম্পন্ন</span>
+</div>
+</div>
+<!-- SVG Progress Donut -->
+<div class="relative w-14 h-14 flex items-center justify-center flex-shrink-0">
+<svg class="w-14 h-14 transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-secondary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="69.5, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<span class="absolute material-symbols-outlined text-secondary text-[20px]">how_to_reg</span>
+</div>
+</div>
+<!-- Stacked Capacity Breakdown Bar -->
+<div class="w-full flex flex-col gap-1.5 pt-1">
+<div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="bg-secondary h-full" style="width: 69.5%;" title="চূড়ান্ত নিশ্চিত"></div>
+<div class="bg-tertiary-fixed-dim h-full" style="width: 8.2%;" title="সাময়িক সংরক্ষিত (HELD)"></div>
+<div class="bg-surface-variant h-full" style="width: 22.3%;" title="অবশিষ্ট খালি"></div>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span>৫৪২ নিশ্চিত</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>৬৪ রিজার্ভ (Held)</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-surface-variant"></span>১৭৪ খালি</span>
+</div>
+</div>
+</div>
+<!-- KPI Metric Grid (2x2 + 1 Highlight Card) -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Metric 1: Total Classes -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">শ্রেণি ও শিফট</span>
+<span class="material-symbols-outlined text-[18px] text-primary">apartment</span>
+</div>
+<div class="mt-2">
+<span class="font-mono-metric text-mono-metric text-on-surface">০৮</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">সক্রিয় বিভাগসমূহ</span>
+</div>
+<div class="w-full h-1 bg-primary rounded-full mt-2"></div>
+</div>
+<!-- Metric 2: Total Seats -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase">মোট আসন সংখ্যা</span>
+<span class="material-symbols-outlined text-[18px] text-primary">event_seat</span>
+</div>
+<div class="mt-2">
+<span class="font-mono-metric text-mono-metric text-on-surface">৭৮০</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">অনুমোদিত কোটা</span>
+</div>
+<div class="w-full h-1 bg-on-surface rounded-full mt-2"></div>
+</div>
+<!-- Metric 3: Held Seats -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase text-on-tertiary-container">লকড (HELD)</span>
+<span class="material-symbols-outlined text-[18px] text-on-tertiary-container">timer</span>
+</div>
+<div class="mt-2">
+<span class="font-mono-metric text-mono-metric text-on-tertiary-container">৬৪</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">১০ মি. সময়সীমা</span>
+</div>
+<div class="w-full h-1 bg-tertiary-fixed-dim rounded-full mt-2"></div>
+</div>
+<!-- Metric 4: Available Vacancy -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase text-secondary">অবশিষ্ট খালি</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">chair</span>
+</div>
+<div class="mt-2">
+<span class="font-mono-metric text-mono-metric text-secondary">১৭৪</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">সরাসরি প্রাপ্য</span>
+</div>
+<div class="w-full h-1 bg-secondary rounded-full mt-2"></div>
+</div>
+</div>
+<!-- Primary Admin CTA Button -->
+<button class="w-full h-12 bg-primary text-on-primary font-label-lg text-label-lg rounded-xl flex items-center justify-center gap-space-xs shadow-md active:scale-[0.98] transition-all hover:bg-primary-container" type="button">
+<span class="material-symbols-outlined text-[20px] text-secondary-fixed">add_circle</span>
+<span>নতুন শ্রেণি / শিফট যোগ করুন</span>
+</button>
+<!-- Inventory Header -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[20px]">view_agenda</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">আসন তালিকা ও বিন্যাস</h2>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded-full">৮টি ইউনিট</span>
+</div>
+<!-- Mobile Stacked Inventory Cards -->
+<div class="flex flex-col gap-space-sm">
+<!-- Card 1: Special Full Class (100% Complete) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">৭ম শ্রেণি • প্রভাতি</span>
+<span class="bg-error-container text-on-error-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">পূর্ণ (FULL)</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">meeting_room</span> রুম নং- ৩০১ (মূল ভবন)
+          </span>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="লক স্থিতি" class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</button>
+<button aria-label="বিস্তারিত দেখুন" class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Metrics Row -->
+<div class="grid grid-cols-4 gap-1 py-1 bg-surface-container-low rounded-lg p-2 text-center">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">মোট</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">১২০</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-tertiary-container block">সংরক্ষিত</span>
+<span class="font-label-lg text-label-lg font-bold text-on-tertiary-container">০</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-secondary block">নিশ্চিত</span>
+<span class="font-label-lg text-label-lg font-bold text-secondary">১২০</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-error block">খালি</span>
+<span class="font-label-lg text-label-lg font-bold text-error">০</span>
+</div>
+</div>
+<!-- Mini Progress -->
+<div class="w-full flex flex-col gap-1">
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="bg-error h-full" style="width: 100%;"></div>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>ভর্তি সমাপ্ত: ১০০%</span>
+<span class="text-error font-medium">নতুন আবেদন গ্রহণ বন্ধ</span>
+</div>
+</div>
+</div>
+<!-- Card 2: 6th Grade Morning -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">৬ষ্ঠ শ্রেণি • প্রভাতি</span>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-semibold">ভর্তি চলমান</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">meeting_room</span> রুম নং- ১০২ (ক্যাম্পাস ১)
+          </span>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="লক স্থিতি" class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-secondary hover:bg-secondary-container/30" type="button">
+<span class="material-symbols-outlined text-[18px]">lock_open</span>
+</button>
+<button aria-label="বিস্তারিত দেখুন" class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Metrics Row -->
+<div class="grid grid-cols-4 gap-1 py-1 bg-surface-container-low rounded-lg p-2 text-center">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">মোট</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">১৫০</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-tertiary-container block">সংরক্ষিত</span>
+<span class="font-label-lg text-label-lg font-bold text-on-tertiary-container">১৮</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-secondary block">নিশ্চিত</span>
+<span class="font-label-lg text-label-lg font-bold text-secondary">১০৮</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">খালি</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">২৪</span>
+</div>
+</div>
+<!-- Mini Progress -->
+<div class="w-full flex flex-col gap-1">
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="bg-secondary h-full" style="width: 72%;"></div>
+<div class="bg-tertiary-fixed-dim h-full" style="width: 12%;"></div>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>নিশ্চিত: ৭২.০% (১০৮/১৫০)</span>
+<span class="text-on-tertiary-container font-medium">১৮টি লক সক্রিয়</span>
+</div>
+</div>
+</div>
+<!-- Card 3: 8th Grade Day -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5 flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">৮ম শ্রেণি • দিবা শাখা</span>
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-semibold">ভর্তি চলমান</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[14px]">meeting_room</span> রুম নং- ৪০৫ (বিজ্ঞান ভবন)
+          </span>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="লক স্থিতি" class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-secondary hover:bg-secondary-container/30" type="button">
+<span class="material-symbols-outlined text-[18px]">lock_open</span>
+</button>
+<button aria-label="বিস্তারিত দেখুন" class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Metrics Row -->
+<div class="grid grid-cols-4 gap-1 py-1 bg-surface-container-low rounded-lg p-2 text-center">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">মোট</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">১০০</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-tertiary-container block">সংরক্ষিত</span>
+<span class="font-label-lg text-label-lg font-bold text-on-tertiary-container">১২</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-secondary block">নিশ্চিত</span>
+<span class="font-label-lg text-label-lg font-bold text-secondary">৫৬</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">খালি</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">৩২</span>
+</div>
+</div>
+<!-- Mini Progress -->
+<div class="w-full flex flex-col gap-1">
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="bg-secondary h-full" style="width: 56%;"></div>
+<div class="bg-tertiary-fixed-dim h-full" style="width: 12%;"></div>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>নিশ্চিত: ৫৬.০% (৫৬/১০০)</span>
+<span class="text-secondary font-medium">৩২টি আসন উন্মুক্ত</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Activity Stream Accordion / Feed -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm mt-1">
+<div class="flex items-center justify-between cursor-pointer" id="activityHeader">
+<div class="flex items-center gap-space-xs">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">লাইভ কার্যক্রম ফিড</h3>
+<span class="font-label-sm text-label-sm bg-surface-container text-on-surface-variant px-1.5 py-0.5 rounded">রিয়েলটাইম</span>
+</div>
+<button aria-label="Toggle Activity Feed" class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant" type="button">
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200" id="accordionIcon">expand_less</span>
+</button>
+</div>
+<!-- Feed Items Container -->
+<div class="flex flex-col gap-2 pt-1" id="activityFeedContent">
+<!-- Item 1: Confirmed Admission -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">ভর্তি ফি প্রদান সম্পন্ন</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex-shrink-0">১ মিনিট আগে</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">শিক্ষার্থী: তানভীর হাসান • ৬ষ্ঠ প্রভাতি (#ADM-8831)</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">bKash লেনদেন আইডি: 9K72LM01</span>
+</div>
+</div>
+<!-- Item 2: Seat Held (Lock Created) -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-tertiary-fixed text-on-tertiary-container flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">lock_clock</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">১০ মিনিটের জন্য লক সৃষ্টি</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex-shrink-0">৩ মিনিট আগে</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">BRN: ২০০৮২৬১২৫১৯০৮৭৬৪২ • ৮ম দিবা (সিট: D-14)</span>
+<span class="font-label-sm text-label-sm text-on-tertiary-container font-medium">মেয়াদ শেষ: ০৯:৪৫ মিনিট বাকি</span>
+</div>
+</div>
+<!-- Item 3: Auto Release on Timeout -->
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-error-container text-on-error-container flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]">replay</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">সময়োত্তীর্ণ লক অবমুক্ত</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex-shrink-0">৬ মিনিট আগে</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">৭ম শ্রেণি প্রভাতি আসন (সিট: M-08) পুল-এ ফেরত পাঠানো হয়েছে</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">সিস্টেম অটো-রিলিজ ট্রিগারড</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+    (function() {
+      const header = document.getElementById('activityHeader');
+      const content = document.getElementById('activityFeedContent');
+      const icon = document.getElementById('accordionIcon');
+      if (header && content && icon) {
+        header.addEventListener('click', () => {
+          content.classList.toggle('hidden');
+          icon.style.transform = content.classList.contains('hidden') ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+      }
+    })();
+  </script>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.06)]" data-active-classes="text-secondary font-semibold"><div class="h-16 px-gutter-mobile flex items-center justify-around"><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-on-surface-variant hover:text-on-surface" data-path="admission-catalog" href="#"><span class="material-symbols-outlined text-[22px]">grid_view</span><span class="font-label-sm text-label-sm">ক্যাটালগ</span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-on-surface-variant hover:text-on-surface" data-path="seat-status" href="#"><span class="material-symbols-outlined text-[22px]">event_seat</span><span class="font-label-sm text-label-sm">আসন স্থিতি</span></a><a class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-on-surface-variant hover:text-on-surface" data-path="my-applications" href="#"><span class="material-symbols-outlined text-[22px]">description</span><span class="font-label-sm text-label-sm">আবেদনসমূহ</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-0.5 w-16 h-12 text-secondary font-semibold" data-path="admin-inventory" href="#"><span class="material-symbols-outlined text-[22px]">admin_panel_settings</span><span class="font-label-sm text-label-sm">অ্যাডমিন</span></a></div></nav></body></html>
