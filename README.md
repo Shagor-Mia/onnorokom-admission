@@ -10,7 +10,7 @@ Everything is done from the UI.
 
 > Demo limitations: the payment is simulated (no real transaction), the birth registration number is a
 > client-supplied identifier (not secure identity verification), and the admin screen has no login.
-> See [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md).
+> See [ASSUMPTIONS.md](ASSUMPTIONS.md).
 
 ## 1. Run with Docker
 
@@ -144,7 +144,7 @@ docker compose --profile multi up
 ```
 
 Details: [docs/DATABASE_AND_CONCURRENCY.md](docs/DATABASE_AND_CONCURRENCY.md) and
-[docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md).
+[ASSUMPTIONS.md](ASSUMPTIONS.md).
 
 ## 7. Repository layout
 
@@ -152,7 +152,7 @@ Details: [docs/DATABASE_AND_CONCURRENCY.md](docs/DATABASE_AND_CONCURRENCY.md) an
 backend/                 ASP.NET Core solution (Api, Application, Domain, Infrastructure, Tests) + Dockerfile
 frontend/                React + TypeScript + Vite app + Dockerfile (nginx)
 docker-compose.yml       db, backend, frontend (+ test and multi profiles)
-docs/ASSUMPTIONS.md      Decisions where the brief is not explicit, and why
-docs/AI_USAGE.md         Which AI tools were used, where, and the mistakes they made
+ASSUMPTIONS.md           Decisions where the brief is not explicit, and why
+AI_USAGE.md              Which AI tools were used, where, and the mistakes they made
 docs/                    Specification, API contract, concurrency design, test checklist
 ```

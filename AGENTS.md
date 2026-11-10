@@ -19,7 +19,7 @@ Before modifying files:
 - Do not add a real payment gateway. Confirmation is simulated.
 - Do not add a mandatory parent login/password flow. Student identity is passed through `X-Student-Id`.
 - Admin authentication is not defined by the assignment. Follow the documented assumption; do not invent a large auth subsystem.
-- When the brief is ambiguous, write the chosen behavior and reason in `docs/ASSUMPTIONS.md`.
+- When the brief is ambiguous, write the chosen behavior and reason in `ASSUMPTIONS.md`.
 
 ## 3. Work in controlled phases
 
@@ -110,7 +110,7 @@ Do not spend excessive time on animation or decorative effects.
 
 - Keep commits incremental and meaningful.
 - Do not amend/reset/rewrite existing user commits without asking.
-- Keep `README.md`, `docs/ASSUMPTIONS.md`, and `docs/AI_USAGE.md` updated.
+- Keep `README.md`, `ASSUMPTIONS.md`, and `AI_USAGE.md` updated.
 - Before completion, run the acceptance checklist and report anything not implemented.
 - Do not fabricate screenshots, test output, coverage numbers, or deployment URLs.
 

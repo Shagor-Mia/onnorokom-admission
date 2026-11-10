@@ -12,8 +12,8 @@ contract but do not override it.
   references, and static HTML mockups; it does not yet contain `backend/`,
   `frontend/`, a root `docker-compose.yml`, Dockerfiles, or an automated test
   project.
-- `docs/ASSUMPTIONS.md` still has decisions marked `PENDING`.
-- `docs/AI_USAGE.md` still has verification details marked `PENDING`.
+- `ASSUMPTIONS.md` still has decisions marked `PENDING`.
+- `AI_USAGE.md` still has verification details marked `PENDING`.
 - `README.md` has a build-and-test heading without the corresponding run/test
   instructions.
 - `docs/BACKEND_STRUCTURE.md` and `docs/FRONTEND_PAGES.md` are present locally
@@ -68,7 +68,7 @@ these documents or mockups.
 5. Keep changes focused. Do not overwrite the supplied HTML/UI references or
    unrelated user files.
 6. Document any agreed interpretation of an unspecified behavior in
-   `docs/ASSUMPTIONS.md` before implementing that behavior.
+   `ASSUMPTIONS.md` before implementing that behavior.
 7. Preserve the assignment document's confidentiality when preparing any
    public submission. Do not publish it; ask before removing or untracking an
    existing tracked copy.
@@ -79,7 +79,7 @@ these documents or mockups.
 semantics, and make the documentation internally consistent before writing
 application code.
 
-**Files:** `docs/ASSUMPTIONS.md`. Update `docs/AI_USAGE.md` only when there is
+**Files:** `ASSUMPTIONS.md`. Update `AI_USAGE.md` only when there is
 verifiable information to record; keep README run/test instructions for Phase 7.
 
 **Work:**
@@ -315,8 +315,8 @@ the backend is reachable on port 8080, and data survives `down`/`up`.
 **Goal:** Verify the deliverable against the assignment PDF and repository
 checklist, document truthful results, and leave changes reviewable.
 
-**Files:** Update `README.md`, `docs/ASSUMPTIONS.md`,
-`docs/AI_USAGE.md`, and `docs/TESTING_AND_ACCEPTANCE.md` with actual outcomes;
+**Files:** Update `README.md`, `ASSUMPTIONS.md`,
+`AI_USAGE.md`, and `docs/TESTING_AND_ACCEPTANCE.md` with actual outcomes;
 make code changes only to fix verified in-scope failures.
 
 **Work:**

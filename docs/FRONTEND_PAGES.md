@@ -10,7 +10,7 @@
 > student ID box in the header of every page, uses the PDF's labels ("আবেদন করুন", "ভর্তি ফি দিন",
 > "বাতিল"), has a separate application screen (`/applications/:holdId`), and omits invented content
 > from this guide (government-approval banner, school name, helpline, "PDF download", student name,
-> multi-step class form). Source of truth for behaviour: `frontend/src/` and `docs/ASSUMPTIONS.md`.
+> multi-step class form). Source of truth for behaviour: `frontend/src/` and `ASSUMPTIONS.md`.
 
 ---
 
