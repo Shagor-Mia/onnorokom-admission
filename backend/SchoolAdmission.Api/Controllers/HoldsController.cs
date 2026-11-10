@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolAdmission.Application.DTOs;
+using SchoolAdmission.Application.Exceptions;
 using SchoolAdmission.Application.Services;
 
 namespace SchoolAdmission.Api.Controllers;
@@ -17,14 +18,14 @@ public sealed class HoldsController(IAdmissionService admissionService) : ApiCon
         [FromHeader(Name = "X-Student-Id")] string? studentId,
         CancellationToken cancellationToken)
     {
-        if (!TryParseClassId(classId, out var parsedClassId))
-        {
-            return InvalidRouteId(nameof(classId));
-        }
-
         if (!IsValidStudentId(studentId))
         {
             return InvalidStudentId();
+        }
+
+        if (!TryParseClassId(classId, out var parsedClassId))
+        {
+            return NotFoundProblem(AdmissionErrorCodes.ClassNotFound, "Class");
         }
 
         var response = await admissionService.CreateHoldAsync(
@@ -37,20 +38,16 @@ public sealed class HoldsController(IAdmissionService admissionService) : ApiCon
     [HttpGet("/holds/{holdId}")]
     [ProducesResponseType<HoldStatusResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
-    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetHold(string holdId, CancellationToken cancellationToken)
     {
         if (!TryParseHoldId(holdId, out var parsedHoldId))
         {
-            return InvalidRouteId(nameof(holdId));
+            return NotFoundProblem(AdmissionErrorCodes.HoldNotFound, "Hold");
         }
 
         var response = await admissionService.GetHoldAsync(parsedHoldId, cancellationToken);
         return response is null
-            ? Problem(
-                statusCode: StatusCodes.Status404NotFound,
-                title: "Not Found",
-                detail: "Hold was not found.")
+            ? NotFoundProblem(AdmissionErrorCodes.HoldNotFound, "Hold")
             : Ok(response);
     }
 
@@ -65,14 +62,14 @@ public sealed class HoldsController(IAdmissionService admissionService) : ApiCon
         [FromHeader(Name = "X-Student-Id")] string? studentId,
         CancellationToken cancellationToken)
     {
-        if (!TryParseHoldId(holdId, out var parsedHoldId))
-        {
-            return InvalidRouteId(nameof(holdId));
-        }
-
         if (!IsValidStudentId(studentId))
         {
             return InvalidStudentId();
+        }
+
+        if (!TryParseHoldId(holdId, out var parsedHoldId))
+        {
+            return NotFoundProblem(AdmissionErrorCodes.HoldNotFound, "Hold");
         }
 
         return Ok(await admissionService.ConfirmHoldAsync(
@@ -92,14 +89,14 @@ public sealed class HoldsController(IAdmissionService admissionService) : ApiCon
         [FromHeader(Name = "X-Student-Id")] string? studentId,
         CancellationToken cancellationToken)
     {
-        if (!TryParseHoldId(holdId, out var parsedHoldId))
-        {
-            return InvalidRouteId(nameof(holdId));
-        }
-
         if (!IsValidStudentId(studentId))
         {
             return InvalidStudentId();
+        }
+
+        if (!TryParseHoldId(holdId, out var parsedHoldId))
+        {
+            return NotFoundProblem(AdmissionErrorCodes.HoldNotFound, "Hold");
         }
 
         await admissionService.CancelHoldAsync(parsedHoldId, studentId!, cancellationToken);

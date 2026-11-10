@@ -10,6 +10,12 @@ using SchoolAdmission.Infrastructure.Persistence;
 
 namespace SchoolAdmission.Infrastructure.Services;
 
+/// <summary>
+/// Admission use cases. Every operation that changes seat occupancy runs inside a
+/// PostgreSQL transaction that row-locks either the class (hold creation) or the
+/// hold (confirm/cancel), so correctness holds across threads and across separate
+/// backend processes sharing the database.
+/// </summary>
 public sealed class AdmissionService(
     AppDbContext dbContext,
     HoldDurationSettings holdDurationSettings) : IAdmissionService
@@ -23,8 +29,18 @@ public sealed class AdmissionService(
         {
             throw new AdmissionException(
                 (int)HttpStatusCode.BadRequest,
+                AdmissionErrorCodes.ValidationFailed,
                 "Invalid request",
                 "Class name is required.");
+        }
+
+        if (request.TotalSeats <= 0)
+        {
+            throw new AdmissionException(
+                (int)HttpStatusCode.BadRequest,
+                AdmissionErrorCodes.ValidationFailed,
+                "Invalid request",
+                "Total seats must be a positive integer.");
         }
 
         var admissionClass = new AdmissionClass
@@ -47,11 +63,12 @@ public sealed class AdmissionService(
     public async Task<IReadOnlyList<ClassMetricsResponse>> ListClassesAsync(
         CancellationToken cancellationToken)
     {
-        await ExpireStaleHoldsAsync(null, DateTimeOffset.UtcNow, cancellationToken);
-        var metrics = await ClassMetricsQuery(DateTimeOffset.UtcNow)
-            .ToListAsync(cancellationToken);
+        var now = DateTimeOffset.UtcNow;
+        await ExpireStaleHoldsAsync(null, now, cancellationToken);
+        var metrics = await ClassMetricsQuery(now).ToListAsync(cancellationToken);
         return metrics
-            .OrderBy(admissionClass => admissionClass.Name)
+            .OrderBy(admissionClass => admissionClass.CreatedAtUtc)
+            .ThenBy(admissionClass => admissionClass.Name)
             .Select(ToClassMetricsResponse)
             .ToList();
     }
@@ -60,8 +77,9 @@ public sealed class AdmissionService(
         Guid classId,
         CancellationToken cancellationToken)
     {
-        await ExpireStaleHoldsAsync(classId, DateTimeOffset.UtcNow, cancellationToken);
-        var metrics = await ClassMetricsQuery(DateTimeOffset.UtcNow, classId)
+        var now = DateTimeOffset.UtcNow;
+        await ExpireStaleHoldsAsync(classId, now, cancellationToken);
+        var metrics = await ClassMetricsQuery(now, classId)
             .SingleOrDefaultAsync(cancellationToken);
         return metrics is null ? null : ToClassMetricsResponse(metrics);
     }
@@ -72,6 +90,8 @@ public sealed class AdmissionService(
         CancellationToken cancellationToken)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        // Serialize all hold allocations for this class (across every backend process).
         var admissionClass = await dbContext.Classes
             .FromSqlInterpolated(
                 $"SELECT * FROM admission_classes WHERE id = {classId} FOR UPDATE")
@@ -79,7 +99,7 @@ public sealed class AdmissionService(
 
         if (admissionClass is null)
         {
-            throw NotFound("Class");
+            throw NotFound(AdmissionErrorCodes.ClassNotFound, "Class");
         }
 
         var now = DateTimeOffset.UtcNow;
@@ -94,7 +114,9 @@ public sealed class AdmissionService(
 
         if (hasExistingApplication)
         {
-            throw Conflict("This student already has an active application for this class.");
+            throw Conflict(
+                AdmissionErrorCodes.DuplicateActiveApplication,
+                "This student already has an active application or confirmed admission for this class.");
         }
 
         var occupiedSeats = await dbContext.Holds.CountAsync(
@@ -105,7 +127,9 @@ public sealed class AdmissionService(
 
         if (occupiedSeats >= admissionClass.TotalSeats)
         {
-            throw Conflict("No seats are currently available for this class.");
+            throw Conflict(
+                AdmissionErrorCodes.NoSeatsAvailable,
+                "No seats are currently available for this class.");
         }
 
         var hold = new AdmissionHold
@@ -115,7 +139,8 @@ public sealed class AdmissionService(
             StudentId = studentId,
             Status = HoldStatus.Held,
             CreatedAtUtc = now,
-            ExpiresAtUtc = now.AddSeconds(holdDurationSettings.Seconds)
+            // Whole seconds keep the API timestamp identical before and after a DB round trip.
+            ExpiresAtUtc = TruncateToSeconds(now.AddSeconds(holdDurationSettings.Seconds))
         };
 
         dbContext.Holds.Add(hold);
@@ -146,11 +171,15 @@ public sealed class AdmissionService(
 
         var hold = await dbContext.Holds
             .Where(hold => hold.Id == holdId)
-            .Select(hold => new HoldStatusData(
+            .Select(hold => new HoldData(
                 hold.Id,
                 hold.ClassId,
+                hold.Class!.Name,
                 hold.Status,
-                hold.ExpiresAtUtc))
+                hold.ExpiresAtUtc,
+                hold.CreatedAtUtc,
+                hold.ConfirmedAtUtc,
+                hold.CancelledAtUtc))
             .SingleOrDefaultAsync(cancellationToken);
 
         return hold is null
@@ -159,7 +188,11 @@ public sealed class AdmissionService(
                 HoldId(hold.Id),
                 ClassId(hold.ClassId),
                 StatusName(hold.Status),
-                hold.ExpiresAtUtc);
+                hold.ExpiresAtUtc,
+                hold.ClassName,
+                hold.CreatedAtUtc,
+                hold.ConfirmedAtUtc,
+                hold.CancelledAtUtc);
     }
 
     public async Task<ConfirmedHoldResponse> ConfirmHoldAsync(
@@ -168,34 +201,37 @@ public sealed class AdmissionService(
         CancellationToken cancellationToken)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
-        var hold = await dbContext.Holds
-            .FromSqlInterpolated($"SELECT * FROM admission_holds WHERE id = {holdId} FOR UPDATE")
-            .SingleOrDefaultAsync(cancellationToken);
-
-        if (hold is null)
-        {
-            throw NotFound("Hold");
-        }
+        var hold = await LockHoldAsync(holdId, cancellationToken);
 
         EnsureOwner(hold, studentId);
         if (hold.Status == HoldStatus.Confirmed)
         {
+            // Idempotent: a repeated confirmation changes nothing.
             await transaction.CommitAsync(cancellationToken);
             return new ConfirmedHoldResponse(HoldId(hold.Id), StatusName(hold.Status));
         }
 
-        if (hold.Status != HoldStatus.Held)
+        var now = DateTimeOffset.UtcNow;
+        if (hold.Status == HoldStatus.Expired ||
+            (hold.Status == HoldStatus.Held && hold.ExpiresAtUtc <= now))
         {
-            throw Conflict("Only an active hold can be confirmed.");
+            if (hold.Status == HoldStatus.Held)
+            {
+                hold.Status = HoldStatus.Expired;
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            await transaction.CommitAsync(cancellationToken);
+            throw Conflict(
+                AdmissionErrorCodes.HoldExpired,
+                "This hold has expired and cannot be confirmed.");
         }
 
-        var now = DateTimeOffset.UtcNow;
-        if (hold.ExpiresAtUtc <= now)
+        if (hold.Status != HoldStatus.Held)
         {
-            hold.Status = HoldStatus.Expired;
-            await dbContext.SaveChangesAsync(cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-            throw Conflict("This hold has expired and cannot be confirmed.");
+            throw Conflict(
+                AdmissionErrorCodes.HoldNotActive,
+                "Only an active hold can be confirmed.");
         }
 
         hold.Status = HoldStatus.Confirmed;
@@ -212,34 +248,37 @@ public sealed class AdmissionService(
         CancellationToken cancellationToken)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
-        var hold = await dbContext.Holds
-            .FromSqlInterpolated($"SELECT * FROM admission_holds WHERE id = {holdId} FOR UPDATE")
-            .SingleOrDefaultAsync(cancellationToken);
-
-        if (hold is null)
-        {
-            throw NotFound("Hold");
-        }
+        var hold = await LockHoldAsync(holdId, cancellationToken);
 
         EnsureOwner(hold, studentId);
         if (hold.Status == HoldStatus.Cancelled)
         {
+            // Idempotent: a repeated cancellation is a no-op success.
             await transaction.CommitAsync(cancellationToken);
             return;
         }
 
-        if (hold.Status != HoldStatus.Held)
+        var now = DateTimeOffset.UtcNow;
+        if (hold.Status == HoldStatus.Expired ||
+            (hold.Status == HoldStatus.Held && hold.ExpiresAtUtc <= now))
         {
-            throw Conflict("Only an active hold can be cancelled.");
+            if (hold.Status == HoldStatus.Held)
+            {
+                hold.Status = HoldStatus.Expired;
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            await transaction.CommitAsync(cancellationToken);
+            throw Conflict(
+                AdmissionErrorCodes.HoldExpired,
+                "This hold has already expired; its seat has been released.");
         }
 
-        var now = DateTimeOffset.UtcNow;
-        if (hold.ExpiresAtUtc <= now)
+        if (hold.Status != HoldStatus.Held)
         {
-            hold.Status = HoldStatus.Expired;
-            await dbContext.SaveChangesAsync(cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-            throw Conflict("This hold has expired and cannot be cancelled.");
+            throw Conflict(
+                AdmissionErrorCodes.HoldNotActive,
+                "A confirmed admission cannot be cancelled.");
         }
 
         hold.Status = HoldStatus.Cancelled;
@@ -252,16 +291,28 @@ public sealed class AdmissionService(
         string studentId,
         CancellationToken cancellationToken)
     {
-        await ExpireStaleHoldsAsync(null, DateTimeOffset.UtcNow, cancellationToken);
+        var now = DateTimeOffset.UtcNow;
+        await dbContext.Holds
+            .Where(hold =>
+                hold.StudentId == studentId &&
+                hold.Status == HoldStatus.Held &&
+                hold.ExpiresAtUtc <= now)
+            .ExecuteUpdateAsync(
+                setters => setters.SetProperty(hold => hold.Status, HoldStatus.Expired),
+                cancellationToken);
+
         var holds = await dbContext.Holds
             .Where(hold => hold.StudentId == studentId)
             .OrderByDescending(hold => hold.CreatedAtUtc)
-            .Select(hold => new StudentHoldData(
+            .Select(hold => new HoldData(
                 hold.Id,
                 hold.ClassId,
                 hold.Class!.Name,
                 hold.Status,
-                hold.ExpiresAtUtc))
+                hold.ExpiresAtUtc,
+                hold.CreatedAtUtc,
+                hold.ConfirmedAtUtc,
+                hold.CancelledAtUtc))
             .ToListAsync(cancellationToken);
 
         return holds.Select(hold => new StudentHoldResponse(
@@ -269,7 +320,19 @@ public sealed class AdmissionService(
             ClassId(hold.ClassId),
             hold.ClassName,
             StatusName(hold.Status),
-            hold.ExpiresAtUtc)).ToList();
+            hold.ExpiresAtUtc,
+            hold.CreatedAtUtc,
+            hold.ConfirmedAtUtc,
+            hold.CancelledAtUtc)).ToList();
+    }
+
+    private async Task<AdmissionHold> LockHoldAsync(Guid holdId, CancellationToken cancellationToken)
+    {
+        var hold = await dbContext.Holds
+            .FromSqlInterpolated($"SELECT * FROM admission_holds WHERE id = {holdId} FOR UPDATE")
+            .SingleOrDefaultAsync(cancellationToken);
+
+        return hold ?? throw NotFound(AdmissionErrorCodes.HoldNotFound, "Hold");
     }
 
     private IQueryable<ClassMetricsData> ClassMetricsQuery(DateTimeOffset now, Guid? classId = null)
@@ -284,12 +347,9 @@ public sealed class AdmissionService(
             admissionClass.Id,
             admissionClass.Name,
             admissionClass.TotalSeats,
+            admissionClass.CreatedAtUtc,
             admissionClass.Holds.Count(hold =>
                 hold.Status == HoldStatus.Held && hold.ExpiresAtUtc > now),
-            admissionClass.Holds.Count(hold => hold.Status == HoldStatus.Confirmed),
-            admissionClass.TotalSeats -
-            admissionClass.Holds.Count(hold =>
-                hold.Status == HoldStatus.Held && hold.ExpiresAtUtc > now) -
             admissionClass.Holds.Count(hold => hold.Status == HoldStatus.Confirmed)));
     }
 
@@ -300,7 +360,7 @@ public sealed class AdmissionService(
             metrics.TotalSeats,
             metrics.HeldSeats,
             metrics.ConfirmedSeats,
-            metrics.AvailableSeats);
+            Math.Max(0, metrics.TotalSeats - metrics.HeldSeats - metrics.ConfirmedSeats));
 
     private Task<int> ExpireStaleHoldsAsync(
         Guid? classId,
@@ -326,16 +386,20 @@ public sealed class AdmissionService(
         {
             throw new AdmissionException(
                 (int)HttpStatusCode.Forbidden,
+                AdmissionErrorCodes.HoldNotOwned,
                 "Forbidden",
                 "This application belongs to a different student.");
         }
     }
 
-    private static AdmissionException NotFound(string resource) =>
-        new((int)HttpStatusCode.NotFound, "Not Found", $"{resource} was not found.");
+    private static DateTimeOffset TruncateToSeconds(DateTimeOffset value) =>
+        new(value.Ticks - value.Ticks % TimeSpan.TicksPerSecond, TimeSpan.Zero);
 
-    private static AdmissionException Conflict(string detail) =>
-        new((int)HttpStatusCode.Conflict, "Conflict", detail);
+    private static AdmissionException NotFound(string code, string resource) =>
+        new((int)HttpStatusCode.NotFound, code, "Not Found", $"{resource} was not found.");
+
+    private static AdmissionException Conflict(string code, string detail) =>
+        new((int)HttpStatusCode.Conflict, code, "Conflict", detail);
 
     private static string ClassId(Guid id) => $"c_{id:N}";
     private static string HoldId(Guid id) => $"h_{id:N}";
@@ -353,20 +417,17 @@ public sealed class AdmissionService(
         Guid Id,
         string Name,
         int TotalSeats,
+        DateTimeOffset CreatedAtUtc,
         int HeldSeats,
-        int ConfirmedSeats,
-        int AvailableSeats);
+        int ConfirmedSeats);
 
-    private sealed record HoldStatusData(
-        Guid Id,
-        Guid ClassId,
-        HoldStatus Status,
-        DateTimeOffset ExpiresAtUtc);
-
-    private sealed record StudentHoldData(
+    private sealed record HoldData(
         Guid Id,
         Guid ClassId,
         string ClassName,
         HoldStatus Status,
-        DateTimeOffset ExpiresAtUtc);
+        DateTimeOffset ExpiresAtUtc,
+        DateTimeOffset CreatedAtUtc,
+        DateTimeOffset? ConfirmedAtUtc,
+        DateTimeOffset? CancelledAtUtc);
 }

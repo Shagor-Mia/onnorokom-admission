@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolAdmission.Application.DTOs;
+using SchoolAdmission.Application.Exceptions;
 using SchoolAdmission.Application.Services;
 
 namespace SchoolAdmission.Api.Controllers;
@@ -28,20 +29,16 @@ public sealed class ClassesController(IAdmissionService admissionService) : ApiC
     [HttpGet("{classId}")]
     [ProducesResponseType<ClassMetricsResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
-    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetClass(string classId, CancellationToken cancellationToken)
     {
         if (!TryParseClassId(classId, out var parsedClassId))
         {
-            return InvalidRouteId(nameof(classId));
+            return NotFoundProblem(AdmissionErrorCodes.ClassNotFound, "Class");
         }
 
         var response = await admissionService.GetClassAsync(parsedClassId, cancellationToken);
         return response is null
-            ? Problem(
-                statusCode: StatusCodes.Status404NotFound,
-                title: "Not Found",
-                detail: "Class was not found.")
+            ? NotFoundProblem(AdmissionErrorCodes.ClassNotFound, "Class")
             : Ok(response);
     }
 }
