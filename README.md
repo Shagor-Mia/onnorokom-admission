@@ -42,6 +42,9 @@ therefore all data.)
 
 ## 2. Using the app
 
+> Step-by-step guide in Bengali for school admins and guardians (every screen and button):
+> **[USER_GUIDE.md](USER_GUIDE.md)**
+
 1. Open http://localhost:5173. At the top of every page there is a box for the student's
    **জন্ম নিবন্ধন নম্বর** (17 digits; Bengali digits are accepted). Save it — it is remembered after a page
    refresh or browser restart. There is no login.
@@ -191,6 +194,7 @@ Details: [docs/DATABASE_AND_CONCURRENCY.md](docs/DATABASE_AND_CONCURRENCY.md) an
 backend/                 ASP.NET Core solution (Api, Application, Domain, Infrastructure, Tests) + Dockerfile
 frontend/                React + TypeScript + Vite app + Dockerfile (nginx)
 docker-compose.yml       db, backend, frontend (+ test and multi profiles)
+USER_GUIDE.md            Step-by-step guide for admins and guardians (Bengali)
 ASSUMPTIONS.md           Decisions where the brief is not explicit, and why
 AI_USAGE.md              Which AI tools were used, where, and the mistakes they made
 docs/                    Specification, API contract, concurrency design, test checklist
