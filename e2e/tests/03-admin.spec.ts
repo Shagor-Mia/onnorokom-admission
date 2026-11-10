@@ -1,4 +1,17 @@
-import { adminRow, bn, classCard, createClass, createHold, expect, newStudentId, test, uniqueName } from './helpers';
+import {
+  API_URL,
+  adminRow,
+  bn,
+  classCard,
+  confirmHold,
+  createClass,
+  createHold,
+  expect,
+  newStudentId,
+  test,
+  uniqueName,
+  type ClassSeats,
+} from './helpers';
 
 test.describe('School admin — Class তৈরি (create class form)', () => {
   test('page texts, breadcrumb and the two ways back', async ({ page }) => {
@@ -176,5 +189,75 @@ test.describe('School admin — dashboard (seat counts)', () => {
     await page.getByRole('button', { name: 'রিফ্রেশ' }).click();
     await expect(adminRow(page, morning.name).getByRole('cell').nth(1)).toHaveText(bn(2));
     await expect(adminRow(page, morning.name).getByRole('cell').nth(3)).toHaveText(bn(3));
+  });
+});
+
+test.describe('School admin — totals', () => {
+  test('confirmed column, summary cards and overall progress follow the real seat counts', async ({ page, request }) => {
+    const created = await createClass(request, uniqueName('Class 7 - Day Shift'), 4);
+    const paid = newStudentId();
+    const waiting = newStudentId();
+    const first = await createHold(request, created.id, paid);
+    await confirmHold(request, first.holdId, paid);
+    const second = await createHold(request, created.id, waiting);
+
+    await page.goto('/admin');
+    const row = adminRow(page, created.name);
+    // total, held, confirmed, available, progress
+    await expect(row.getByRole('cell')).toHaveText([bn(4), bn(1), bn(1), bn(2), /৫০% পূর্ণ/]);
+
+    // A guardian pays: the "নিশ্চিত" column goes up without reloading the page.
+    await confirmHold(request, second.holdId, waiting);
+    await expect(row.getByRole('cell')).toHaveText([bn(4), bn(0), bn(2), bn(2), /৫০% পূর্ণ/], { timeout: 12_000 });
+
+    // Summary cards and the progress panel show the same totals as GET /classes.
+    const summary = page.getByRole('group', { name: 'সারসংক্ষেপ' });
+    const card = (label: string) => summary.locator('.card').filter({ hasText: label }).locator('.metric');
+    const progress = page.getByRole('region', { name: 'সামগ্রিক ভর্তি অগ্রগতি' });
+    const item = (label: string) => progress.getByRole('listitem').filter({ hasText: label }).locator('strong');
+
+    const fromApi = async () => {
+      const all = (await (await request.get(`${API_URL}/classes`)).json()) as ClassSeats[];
+      const sum = (pick: (c: ClassSeats) => number) => all.reduce((acc, c) => acc + pick(c), 0);
+      return {
+        classes: bn(all.length),
+        total: bn(sum((c) => c.totalSeats)),
+        held: bn(sum((c) => c.heldSeats)),
+        confirmed: bn(sum((c) => c.confirmedSeats)),
+        available: bn(sum((c) => c.availableSeats)),
+      };
+    };
+    const fromUi = async () => ({
+      classes: await card('মোট শ্রেণি ও শিফট').innerText(),
+      total: await card('মোট নির্ধারিত আসন').innerText(),
+      held: await card('সাময়িক সংরক্ষিত (HELD)').innerText(),
+      confirmed: await card('চূড়ান্ত ভর্তি নিশ্চিত').innerText(),
+      available: await card('অবশিষ্ট খালি আসন').innerText(),
+      progressTotal: (await progress.innerText()).match(/([০-৯]+) আসন/)?.[1],
+      progressConfirmed: (await item('নিশ্চিত ভর্তি').innerText()).replace(' আসন', ''),
+      progressHeld: (await item('সাময়িক সংরক্ষিত (ফি অপেক্ষমাণ)').innerText()).replace(' আসন', ''),
+      progressAvailable: (await item('আবেদনযোগ্য খালি আসন').innerText()).replace(' আসন', ''),
+    });
+    // Holds of earlier tests may expire meanwhile, so compare fresh values until both sides agree.
+    await expect
+      .poll(
+        async () => {
+          const api = await fromApi();
+          const ui = await fromUi();
+          return JSON.stringify(ui) === JSON.stringify({
+            ...api,
+            progressTotal: api.total,
+            progressConfirmed: api.confirmed,
+            progressHeld: api.held,
+            progressAvailable: api.available,
+          })
+            ? 'match'
+            : JSON.stringify({ api, ui });
+        },
+        { timeout: 15_000 },
+      )
+      .toBe('match');
+    await expect(progress.getByRole('heading', { name: 'সামগ্রিক ভর্তি অগ্রগতি' })).toBeVisible();
+    await expect(progress.getByRole('img', { name: /নিশ্চিত ভর্তি হার [০-৯.]+%/ })).toBeVisible();
   });
 });

@@ -5,7 +5,7 @@
 ```bash
 docker compose --profile test run --rm backend-tests    # 18 backend tests (unit + PostgreSQL)
 docker compose --profile test run --rm frontend-tests   # 21 frontend tests (Vitest)
-docker compose --profile e2e run --rm --build e2e-tests  # 27 Playwright UI tests in Chromium (isolated stack)
+docker compose --profile e2e run --rm --build e2e-tests  # 28 Playwright UI tests in Chromium (isolated stack)
 docker compose --profile test rm -sf test-db            # remove the throwaway test database
 docker compose --profile e2e rm -sf e2e-db e2e-backend e2e-frontend   # remove the throwaway e2e stack
 ```
@@ -64,7 +64,7 @@ Evidence key: **BT** = backend automated test, **FT** = frontend automated test,
 | Dockerfiles for backend and frontend | PASS | `backend/Dockerfile`, `frontend/Dockerfile` |
 | ≥ 3 backend automated tests incl. a concurrency test | PASS | 18 tests, 5 of them concurrency tests |
 | Bonus: two backend processes, one database | PASS | BT (two hosts) + E2E (`--profile multi`: 80 requests over :8080/:8081 → 10 × 201, 70 × 409) |
-| Bonus: frontend automated tests | PASS | 21 Vitest tests + 27 Playwright UI tests (every screen, button, form, filter and dialog) |
+| Bonus: frontend automated tests | PASS | 21 Vitest tests + 28 Playwright UI tests (every screen, button, form, filter and dialog) |
 | README, ASSUMPTIONS.md, AI_USAGE.md | PASS | Updated |
 | Incremental commit history | PASS | One commit per step |
 | Assignment PDF not public | **OPEN** | `onno.pdf` is committed in history (commit `7fb1852`); must be removed before the repository is made public |
