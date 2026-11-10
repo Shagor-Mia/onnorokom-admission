@@ -11,7 +11,7 @@
 
 x-backend-env: &backend-env
   ASPNETCORE_ENVIRONMENT: Production
-  ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${POSTGRES_DB:-school_admission};Username=${POSTGRES_USER:-app};Password=${POSTGRES_PASSWORD:-app_local_password}"
+  ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${POSTGRES_DB:-school_admission};Username=${POSTGRES_USER:-app};Password=${POSTGRES_PASSWORD:-app_local_password};Maximum Pool Size=${DB_MAX_POOL_SIZE:-40}"
   HOLD_DURATION_SECONDS: ${HOLD_DURATION_SECONDS:-600}
   CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
 

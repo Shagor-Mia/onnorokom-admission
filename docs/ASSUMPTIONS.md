@@ -86,3 +86,9 @@ Verified by the test `TwoBackendInstancesSharingDatabase_NeverExceedCapacity` (t
 80 concurrent requests, 10 seats → exactly 10 succeed) and manually with
 `docker compose --profile multi up` (backends on :8080 and :8081): 80 concurrent requests split across
 both → 10 × `201`, 70 × `409`.
+
+- **Connection budget.** PostgreSQL allows 100 connections by default, while Npgsql's default pool is 100
+  per process. With two backends under a burst, one request once failed with `53300 too many clients`
+  (HTTP 500; capacity was still respected). Each backend therefore caps its pool at
+  `DB_MAX_POOL_SIZE` (default 40, so 2 × 40 stays below 100); extra requests wait briefly for a pooled
+  connection instead of failing. Raise PostgreSQL's `max_connections` before running more instances.

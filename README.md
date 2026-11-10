@@ -62,6 +62,7 @@ Tip: to see expiry quickly, start with a short hold time: `HOLD_DURATION_SECONDS
 | Variable | Used by | Default | Purpose |
 |---|---|---|---|
 | `HOLD_DURATION_SECONDS` | backend | `600` | How long a seat stays held |
+| `DB_MAX_POOL_SIZE` | backend | `40` | Database connections per backend process (2 backends × 40 stay under PostgreSQL's 100) |
 | `ConnectionStrings__DefaultConnection` | backend | built from the `POSTGRES_*` values, host `db` | PostgreSQL connection |
 | `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | db, backend | `school_admission` / `app` / `app_local_password` | Database (local demo credentials) |
 | `VITE_API_BASE_URL` | frontend | `http://localhost:8080` | Backend URL used by the browser; read when the frontend container starts, so no rebuild is needed |
