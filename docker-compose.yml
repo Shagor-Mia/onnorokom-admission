@@ -1,0 +1,112 @@
+# School Admission System
+#
+#   docker compose up                          -> PostgreSQL + backend (:8080) + frontend (:5173)
+#   docker compose --profile test run --rm backend-tests    -> backend tests incl. concurrency
+#   docker compose --profile test run --rm frontend-tests   -> frontend tests
+#   docker compose --profile multi up          -> also a 2nd backend on :8081 (same database)
+#
+# Every value has a default, so no .env file is required. Copy .env.example to .env
+# only to override something. Data lives in the named volume "pgdata"; it survives
+# `docker compose down` (do NOT add -v, which deletes the volume).
+
+x-backend-env: &backend-env
+  ASPNETCORE_ENVIRONMENT: Production
+  ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${POSTGRES_DB:-school_admission};Username=${POSTGRES_USER:-app};Password=${POSTGRES_PASSWORD:-app_local_password}"
+  HOLD_DURATION_SECONDS: ${HOLD_DURATION_SECONDS:-600}
+  CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-school_admission}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app_local_password}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment: *backend-env
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+    environment:
+      # Read at container start (no rebuild needed). Must be reachable from the browser.
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Bonus: a second backend process on another port sharing the same database.
+  backend-2:
+    profiles: ["multi"]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment: *backend-env
+    ports:
+      - "8081:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ---- Test profile (throwaway database, never touches pgdata) ----
+  test-db:
+    profiles: ["test"]
+    image: postgres:16-alpine
+    command: ["postgres", "-c", "max_connections=300", "-c", "fsync=off"]
+    environment:
+      POSTGRES_DB: admission_test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d admission_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  backend-tests:
+    profiles: ["test"]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: test
+    environment:
+      TEST_DATABASE_CONNECTION: "Host=test-db;Port=5432;Database=admission_test;Username=test;Password=test"
+    depends_on:
+      test-db:
+        condition: service_healthy
+
+  frontend-tests:
+    profiles: ["test"]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: test
+
+volumes:
+  pgdata:
