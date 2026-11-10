@@ -4,8 +4,10 @@
 
 ```bash
 docker compose --profile test run --rm backend-tests    # 18 backend tests (unit + PostgreSQL)
-docker compose --profile test run --rm frontend-tests   # 16 frontend tests (Vitest)
+docker compose --profile test run --rm frontend-tests   # 21 frontend tests (Vitest)
+docker compose --profile e2e run --rm --build e2e-tests  # 27 Playwright UI tests in Chromium (isolated stack)
 docker compose --profile test rm -sf test-db            # remove the throwaway test database
+docker compose --profile e2e rm -sf e2e-db e2e-backend e2e-frontend   # remove the throwaway e2e stack
 ```
 
 Without Docker: set `TEST_DATABASE_CONNECTION` and run `dotnet test backend/SchoolAdmission.sln`
@@ -15,7 +17,7 @@ Each backend integration test uses its own temporary PostgreSQL schema and drops
 ## Results (last run: 2026-11-10, Docker Desktop on Windows)
 
 Evidence key: **BT** = backend automated test, **FT** = frontend automated test,
-**E2E** = curl/PowerShell checks against the running `docker compose` stack,
+**E2E** = curl/PowerShell checks against the running `docker compose` stack, **PW** = Playwright UI test (`e2e/tests/`),
 **—** = not verified yet.
 
 ### Mandatory backend rules (PDF §1.5)
@@ -47,10 +49,10 @@ Evidence key: **BT** = backend automated test, **FT** = frontend automated test,
 | Everything works from the UI (no Postman/DB) | PASS (automated) / — (browser) | FT covers create class, apply, pay, history; every API call needed by the UI was checked E2E incl. CORS. A manual walkthrough in a real browser has **not** been done here. |
 | Student ID box at the top of the page, no login | PASS | FT `StudentIdBar` (17-digit validation, saved) |
 | Expired → `EXPIRED` without reload, "ভর্তি ফি দিন" disabled | PASS (automated) | FT: hold expiring in 1.5 s flips to EXPIRED and disables both buttons |
-| Seat counts refresh every few seconds without reload | PASS (by design + code) | `GET /classes` polled every 4 s (`usePolling`); not separately asserted by a test |
+| Seat counts refresh every few seconds without reload | PASS (automated) | PW: holds made elsewhere appear on Class তালিকা and the admin table within a few seconds, no reload |
 | Refresh / reopen browser → student still sees their applications | PASS (automated) | FT: ID restored from `localStorage`, `/me/holds` sent with it |
 | Errors in plain language (no seats, expired, bad input, server down), no blank page | PASS (automated) | FT: 409 → Bengali message, server down → connection message; unit tests for every error code; error boundary |
-| Responsive / keyboard / labels | — | CSS has mobile breakpoints, labelled inputs, visible focus, native `<dialog>`; not checked on real devices |
+| Responsive / keyboard / labels | PASS (automated) | PW: no sideways scroll on any page at 390/768/1280 px; skip link, Enter in the ID box, Escape closes dialogs, focus moves into dialogs; elements found by their labels. Not checked on physical devices |
 
 ### Docker and submission (PDF §1.2, §1.7)
 
@@ -62,7 +64,7 @@ Evidence key: **BT** = backend automated test, **FT** = frontend automated test,
 | Dockerfiles for backend and frontend | PASS | `backend/Dockerfile`, `frontend/Dockerfile` |
 | ≥ 3 backend automated tests incl. a concurrency test | PASS | 18 tests, 5 of them concurrency tests |
 | Bonus: two backend processes, one database | PASS | BT (two hosts) + E2E (`--profile multi`: 80 requests over :8080/:8081 → 10 × 201, 70 × 409) |
-| Bonus: frontend automated tests | PASS | 16 Vitest tests |
+| Bonus: frontend automated tests | PASS | 21 Vitest tests + 27 Playwright UI tests (every screen, button, form, filter and dialog) |
 | README, ASSUMPTIONS.md, AI_USAGE.md | PASS | Updated |
 | Incremental commit history | PASS | One commit per step |
 | Assignment PDF not public | **OPEN** | `onno.pdf` is committed in history (commit `7fb1852`); must be removed before the repository is made public |

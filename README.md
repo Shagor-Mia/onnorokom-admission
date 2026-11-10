@@ -45,9 +45,11 @@ therefore all data.)
 1. Open http://localhost:5173. At the top of every page there is a box for the student's
    **জন্ম নিবন্ধন নম্বর** (17 digits; Bengali digits are accepted). Save it — it is remembered after a page
    refresh or browser restart. There is no login.
-2. **School admin** (menu) → create classes, e.g. `Class 6 - Morning Shift` with 120 seats and
-   `Class 6 - Day Shift` with 100 seats. The table shows total / held / confirmed / available seats and
-   refreshes automatically.
+2. **School admin:** click **স্কুল অ্যাডমিন** in the top menu (on a phone: **অ্যাডমিন** in the bottom bar),
+   or open **http://localhost:5173/admin** directly. There is no admin login (see ASSUMPTIONS.md). Click
+   **নতুন শ্রেণি/শিফট যোগ** (http://localhost:5173/admin/classes/new) to create classes, e.g.
+   `Class 6 - Morning Shift` with 120 seats and `Class 6 - Day Shift` with 100 seats. The dashboard table
+   shows total / held / confirmed / available seats and refreshes automatically.
 3. **Class তালিকা** → every class with total, held, confirmed and available seats (refreshes every few
    seconds) → **আবেদন করুন**.
 4. **আবেদন** screen → status, time left before the hold expires, **ভর্তি ফি দিন** (simulated payment →
@@ -63,7 +65,7 @@ Tip: to see expiry quickly, start with a short hold time: `HOLD_DURATION_SECONDS
 |---|---|---|---|
 | `HOLD_DURATION_SECONDS` | backend | `600` | How long a seat stays held |
 | `DB_MAX_POOL_SIZE` | backend | `40` | Database connections per backend process (2 backends × 40 stay under PostgreSQL's 100) |
-| `ConnectionStrings__DefaultConnection` | backend | built from the `POSTGRES_*` values, host `db` | PostgreSQL connection |
+| `ConnectionStrings__DefaultConnection` | backend | built from the `POSTGRES_*` values, host `db` | Full PostgreSQL connection string; set it to use any other database, e.g. `Host=my-db;Port=5432;Database=admission;Username=me;Password=secret` |
 | `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | db, backend | `school_admission` / `app` / `app_local_password` | Database (local demo credentials) |
 | `VITE_API_BASE_URL` | frontend | `http://localhost:8080` | Backend URL used by the browser; read when the frontend container starts, so no rebuild is needed |
 | `CORS_ALLOWED_ORIGINS` | backend | `http://localhost:5173,http://127.0.0.1:5173` | Origins allowed to call the API (comma-separated or `*`) |
@@ -98,6 +100,43 @@ data. They cover, among others:
 Without Docker (needs .NET 8 SDK / Node 20): `dotnet test backend/SchoolAdmission.sln` (set
 `TEST_DATABASE_CONNECTION` to a PostgreSQL connection string, otherwise the integration tests are
 skipped) and `cd frontend && npm ci && npm test`.
+
+### End-to-end UI tests (Playwright)
+
+These click through the real UI in Chromium, the way a guardian and a school admin would, against a
+separate stack (its own in-memory database, 30-second holds, no host ports). Your app and its data are not
+touched, and the app does not need to be running.
+
+```bash
+docker compose --profile e2e run --rm --build e2e-tests
+
+# Afterwards: remove the throwaway e2e stack
+docker compose --profile e2e rm -sf e2e-db e2e-backend e2e-frontend
+```
+
+The first run downloads the Playwright image (about 800 MB). Results are printed in the terminal; the HTML
+report (with screenshots and traces of any failure) is written to `e2e/playwright-report/index.html`.
+
+What they cover (`e2e/tests/`):
+
+- **Every screen of the brief:** Class তৈরি, Class তালিকা, আবেদন, আমার আবেদন, plus the admin dashboard,
+  the header/menus, the phone bottom menu, the skip link and the 404 page.
+- **Every button, link and form:** student ID box (empty / short / letters / Bengali digits / Enter key /
+  পরিবর্তন করুন / ফিরে যান), create-class form (all validation messages, quick picks, shift radios, seat
+  +/- buttons, live preview, duplicate name), shift and free-seat filters, admin search / shift dropdown /
+  status filters / রিফ্রেশ, payment and cancel dialogs (ফিরে যান, Escape, হ্যাঁ…), print buttons, status
+  filters and search on আমার আবেদন and every row action.
+- **The rules:** seat counts update without reload; a hold turns `EXPIRED` without reload, the pay button is
+  disabled and the seat comes back; only the owner can pay or cancel; the last seat taken by someone else
+  shows "seat খালি নেই"; the ID and the applications survive refresh and reopening the browser.
+- **Errors in plain Bengali:** server unreachable on every page (and "আবার চেষ্টা করুন" recovers), a
+  server error while applying, unknown application. Any uncaught JavaScript error fails the test.
+- **Layout:** no page scrolls sideways at 390, 768 and 1280 px.
+
+To run them against an app you started yourself (`docker compose up`) with Node 20 installed:
+`cd e2e && npm ci && npx playwright install chromium && npx playwright test` (add
+`PW_CHANNEL=chrome` to use your installed Chrome, `--headed` to watch). Note that this adds test classes to
+that app's database, and the expiry test is skipped there because holds last 600 seconds.
 
 ## 5. API
 

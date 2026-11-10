@@ -41,6 +41,17 @@ Every claim of "passing" below comes from commands that were actually run (Docke
    "Class 6 - দিবা শিফট" instead of the PDF's "Class 6 - Day Shift". Unit tests could not notice either.
    *Caught* in a manual walkthrough in real Chrome driven by Playwright (every PDF screen/rule, at 390/768/1280 px).
    *Fixed*; field errors on the create-class form now also clear as soon as the field is edited.
+10. **Two backends could return a `500`** under a burst (each Npgsql pool may open 100 connections, PostgreSQL
+    allows 100 in total). Capacity was still respected. *Caught* by sending 100 parallel holds across :8080
+    and :8081. *Fixed* with `DB_MAX_POOL_SIZE` (40 per process); 3 × 200 parallel requests → no `500`.
+11. **The database connection string could not really be replaced**: compose hard-coded host `db`, so only
+    the database name and credentials were configurable. *Caught* by running `docker compose config` with an
+    override. *Fixed*: `ConnectionStrings__DefaultConnection` now replaces the whole string, verified by a
+    backend connecting with `Application Name=env-override-check`.
+12. **The AI's own Playwright tests were wrong in three places** (expected a space in "CONFIRMED• …", read seat
+    numbers before the list had loaded, and expected React `autoFocus` to work inside a `<dialog>` opened
+    later). *Caught* because the failures contradicted screenshots of a working UI. The tests were corrected
+    (retrying assertions; focus must be inside the dialog), not the app.
 
 ## Responsibility
 

@@ -11,7 +11,9 @@
 
 x-backend-env: &backend-env
   ASPNETCORE_ENVIRONMENT: Production
-  ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${POSTGRES_DB:-school_admission};Username=${POSTGRES_USER:-app};Password=${POSTGRES_PASSWORD:-app_local_password};Maximum Pool Size=${DB_MAX_POOL_SIZE:-40}"
+  # Set ConnectionStrings__DefaultConnection (shell or .env) to use any other PostgreSQL;
+  # otherwise it is built from the POSTGRES_* values for the bundled "db" container.
+  ConnectionStrings__DefaultConnection: "${ConnectionStrings__DefaultConnection:-Host=db;Port=5432;Database=${POSTGRES_DB:-school_admission};Username=${POSTGRES_USER:-app};Password=${POSTGRES_PASSWORD:-app_local_password};Maximum Pool Size=${DB_MAX_POOL_SIZE:-40}}"
   HOLD_DURATION_SECONDS: ${HOLD_DURATION_SECONDS:-600}
   CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
 
@@ -107,6 +109,71 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       target: test
+
+  # ---- E2E profile: Playwright drives the real UI in Chromium ----
+  # An isolated stack (own in-memory database, short holds, no host ports), so the
+  # app's data and ports are never touched:
+  #   docker compose --profile e2e run --rm --build e2e-tests
+  #   docker compose --profile e2e rm -sf e2e-db e2e-backend e2e-frontend
+  e2e-db:
+    profiles: ["e2e"]
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: admission_e2e
+      POSTGRES_USER: e2e
+      POSTGRES_PASSWORD: e2e
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U e2e -d admission_e2e"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  e2e-backend:
+    profiles: ["e2e"]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Host=e2e-db;Port=5432;Database=admission_e2e;Username=e2e;Password=e2e;Maximum Pool Size=40"
+      # Short holds so the expiry test finishes quickly.
+      HOLD_DURATION_SECONDS: ${E2E_HOLD_DURATION_SECONDS:-30}
+      CORS_ALLOWED_ORIGINS: http://e2e-frontend
+    depends_on:
+      e2e-db:
+        condition: service_healthy
+
+  e2e-frontend:
+    profiles: ["e2e"]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://e2e-backend:8080
+    environment:
+      VITE_API_BASE_URL: http://e2e-backend:8080
+    depends_on:
+      - e2e-backend
+
+  e2e-tests:
+    profiles: ["e2e"]
+    build:
+      context: ./e2e
+      dockerfile: Dockerfile
+    environment:
+      BASE_URL: http://e2e-frontend
+      API_URL: http://e2e-backend:8080
+    # HTML report, screenshots and traces of failed tests end up in e2e/ on the host.
+    volumes:
+      - ./e2e/playwright-report:/e2e/playwright-report
+      - ./e2e/test-results:/e2e/test-results
+    depends_on:
+      e2e-frontend:
+        condition: service_healthy
+      e2e-backend:
+        condition: service_started
 
 volumes:
   pgdata:
