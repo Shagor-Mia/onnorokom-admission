@@ -6,10 +6,7 @@
 
 | Tool | Purpose | Parts assisted |
 |---|---|---|
-| Antigravity / Claude Code / Cursor | PENDING | PENDING |
-| Stitch | PENDING | UI concepts / screen layouts, if used |
-
-Remove tools that were not used and add any tools that were.
+| Copilot SDK in VS Code | Requirements analysis, phased planning, implementation, and validation | Backend foundation and API/lifecycle phases |
 
 ## 2. How AI assistance was used
 
@@ -21,27 +18,35 @@ Describe the actual assistance received. Examples:
 - Test-case generation.
 - Docker and README drafting.
 
+This session used the project specifications to plan and implement the .NET
+backend foundation, PostgreSQL model, API routes, transactional hold lifecycle,
+expiry worker, and PostgreSQL-backed tests. Frontend and Compose implementation
+remain pending.
+
 ## 3. Important AI mistakes or limitations
 
-List mistakes that occurred and how they were corrected. Examples to consider only if they actually happened:
-- Incorrect concurrency approach that could oversell seats.
-- Incorrect expiry handling.
-- Incorrect EF Core migration or PostgreSQL query.
-- Frontend/API contract mismatch.
-- Incorrect Docker networking assumptions.
+The first build found an expression-tree-incompatible enum converter and a
+missing hosting framework reference; both were corrected. PostgreSQL smoke
+checks also found invalid validation metadata on a positional record and an
+EF Core ordering-after-projection translation error; both were corrected and
+the route checks were rerun. Initial concurrency-test runs hit PostgreSQL
+connection timeouts under load; the focused rerun and full suite passed after
+the test-only connection and command timeouts were increased.
 
-## 4. Human verification performed
+## 4. Verification performed
 
 | Area | Verification performed | Result |
 |---|---|---|
-| API contract | PENDING | PENDING |
-| Concurrent seat allocation | PENDING | PENDING |
-| Expiry behavior | PENDING | PENDING |
-| Idempotent confirmation | PENDING | PENDING |
-| UI flows | PENDING | PENDING |
-| Docker startup | PENDING | PENDING |
-| Data persistence | PENDING | PENDING |
+| API contract | Manual route smoke checks against an isolated PostgreSQL instance | Tested routes and response shapes passed; full acceptance remains pending |
+| Concurrent seat allocation | Full PostgreSQL-backed test suite, including 100 simultaneous requests for 10 seats | Passed: exactly 10 successes, 90 capacity conflicts, and 10 occupied seats |
+| Expiry behavior | PostgreSQL-backed hold lifecycle test and manual smoke check | Passed for the exercised lifecycle; background-worker timing races remain untested |
+| Idempotent confirmation | Repeated confirmation of a confirmed hold | Passed |
+| UI flows | Not run | Frontend is pending |
+| Docker startup | Built and ran the backend image with isolated PostgreSQL; startup migrations and readiness passed | Passed for backend only; Compose remains pending |
+| Data persistence | Not run across container restart | Pending Docker/acceptance phase |
 
 ## 5. Final responsibility
 
-The submitted implementation was reviewed and tested by the candidate to the extent stated above. AI assistance does not replace responsibility for correctness, security, and honest reporting.
+The candidate remains responsible for reviewing and testing the final
+submission. AI assistance does not replace responsibility for correctness,
+security, and honest reporting.

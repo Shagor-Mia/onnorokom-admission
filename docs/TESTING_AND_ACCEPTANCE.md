@@ -2,6 +2,19 @@
 
 Use this checklist before calling the assignment complete.
 
+## Running PostgreSQL-backed tests
+
+Set `TEST_DATABASE_CONNECTION` to a PostgreSQL connection string, then run:
+
+```powershell
+dotnet test backend/SchoolAdmission.sln
+```
+
+The integration tests create a unique temporary schema per test and drop only
+that schema afterward. The configured database user must be allowed to create
+and drop schemas. Without `TEST_DATABASE_CONNECTION`, PostgreSQL integration
+tests are explicitly skipped; unit tests still run.
+
 ## 1. Backend functional tests
 
 - [ ] Create a class with valid name and positive capacity returns `201`.
