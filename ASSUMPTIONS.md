@@ -59,12 +59,22 @@ Where the brief is not explicit, this is what the system does and why.
 15. **Classes cannot be edited or deleted** (not required). This avoids undefined behaviour such as
     reducing seats below the number already held or confirmed. `GET /classes` is ordered by creation time.
 
+## Language
+
+16. **The UI is in Bengali; the API contract stays in English.** The brief sets no language rule. The UI
+    text is Bengali because the users are guardians and the brief gives the button labels in Bengali
+    ("আবেদন করুন", "ভর্তি ফি দিন", "বাতিল"); those labels are used word for word. Error messages are
+    Bengali too, so users can understand them (brief rule: "ব্যবহারকারীর বোঝার মতো ভাষায়"). JSON field
+    names and status values (`HELD`, `CONFIRMED`, `EXPIRED`, `CANCELLED`) are kept exactly as in the
+    contract, and the UI shows the status code next to its Bengali label. Class names are shown as the
+    admin typed them. Code and documentation are in English.
+
 ## Deployment
 
-16. **Frontend → backend URL** comes from `VITE_API_BASE_URL`, written into `/config.js` when the frontend
+17. **Frontend → backend URL** comes from `VITE_API_BASE_URL`, written into `/config.js` when the frontend
     container starts, so it can be changed without rebuilding. It must be reachable from the browser
     (default `http://localhost:8080`). The backend allows the UI origin via `CORS_ALLOWED_ORIGINS`.
-17. **Schema** is applied by EF Core migrations at backend start-up (with retry while PostgreSQL starts,
+18. **Schema** is applied by EF Core migrations at backend start-up (with retry while PostgreSQL starts,
     and a PostgreSQL advisory lock so two instances never migrate at the same time).
 
 ## Bonus: two backend processes on one database
