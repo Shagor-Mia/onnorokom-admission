@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { Icon } from './Icon';
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -12,7 +13,7 @@ interface ConfirmDialogProps {
   onCancel: () => void;
 }
 
-/** Accessible modal confirmation using the native <dialog> element. */
+/** Accessible modal confirmation (native <dialog>), DESIGN.md "Cancellation Modals". */
 export function ConfirmDialog({
   open,
   title,
@@ -39,33 +40,45 @@ export function ConfirmDialog({
     }
   }, [open]);
 
+  const danger = tone === 'danger';
   return (
     <dialog
       ref={ref}
-      className="dialog"
+      className="modal"
       aria-labelledby={titleId}
       onCancel={(event) => {
         event.preventDefault();
         if (!busy) onCancel();
       }}
     >
-      <h2 id={titleId} className="dialog__title">
-        {title}
-      </h2>
-      <div className="dialog__body">{children}</div>
-      <div className="dialog__actions">
-        <button type="button" className="btn btn--ghost" onClick={onCancel} disabled={busy}>
-          {cancelLabel}
-        </button>
-        <button
-          type="button"
-          className={`btn ${tone === 'danger' ? 'btn--danger' : 'btn--primary'}`}
-          onClick={onConfirm}
-          disabled={busy}
-          autoFocus
-        >
-          {busy ? 'অপেক্ষা করুন…' : confirmLabel}
-        </button>
+      <div className="flex flex-col gap-space-md p-space-lg">
+        <div className="flex items-start gap-space-md">
+          <span
+            className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl ${
+              danger ? 'bg-error-container text-error' : 'bg-secondary-container text-on-secondary-container'
+            }`}
+          >
+            <Icon name={danger ? 'gpp_maybe' : 'payments'} />
+          </span>
+          <h2 id={titleId} className="pt-1 text-headline-sm text-on-surface">
+            {title}
+          </h2>
+        </div>
+        <div className="text-body-md text-on-surface-variant">{children}</div>
+        <div className="flex flex-col-reverse gap-space-sm sm:flex-row sm:justify-end">
+          <button type="button" className="btn-outline" onClick={onCancel} disabled={busy}>
+            {cancelLabel}
+          </button>
+          <button
+            type="button"
+            className={danger ? 'btn-danger' : 'btn-confirm'}
+            onClick={onConfirm}
+            disabled={busy}
+            autoFocus
+          >
+            {busy ? 'অপেক্ষা করুন…' : confirmLabel}
+          </button>
+        </div>
       </div>
     </dialog>
   );

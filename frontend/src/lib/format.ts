@@ -38,3 +38,28 @@ export function formatDuration(ms: number): string {
 export function formatNumber(value: number): string {
   return toBengaliDigits(value);
 }
+
+/** 0.6667 -> "৬৬.৭%" */
+export function formatPercent(ratio: number): string {
+  const value = Math.round(ratio * 1000) / 10;
+  return `${toBengaliDigits(Number.isInteger(value) ? value : value.toFixed(1))}%`;
+}
+
+/** Short time only, e.g. "১০:১৫:০০" in Bangladesh time. */
+export function formatTime(iso: string | null | undefined): string {
+  if (!iso) return '—';
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return '—';
+  return new Intl.DateTimeFormat('bn-BD', {
+    timeZone: 'Asia/Dhaka',
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+  }).format(date);
+}
+
+/** Short, human tracking number derived from the hold ID: h_3f2a…c9 -> #3F2A-C9D1. */
+export function trackingNumber(holdId: string): string {
+  const hex = holdId.replace(/^h_/, '').toUpperCase();
+  return hex.length >= 8 ? `#${hex.slice(0, 4)}-${hex.slice(-4)}` : `#${hex}`;
+}

@@ -19,11 +19,11 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, State> {
   render() {
     if (this.state.failed) {
       return (
-        <div className="container main">
-          <div className="alert alert--error" role="alert">
-            <p className="alert__title">পেজ দেখাতে সমস্যা হয়েছে</p>
+        <div className="page py-space-xl">
+          <div className="flex flex-col gap-space-sm rounded-xl border border-error/40 bg-error-container p-space-lg text-on-error-container" role="alert">
+            <p className="text-headline-sm">পেজ দেখাতে সমস্যা হয়েছে</p>
             <p>পেজটি রিফ্রেশ করুন। আপনার আবেদনের তথ্য সার্ভারে সংরক্ষিত আছে।</p>
-            <button type="button" className="btn btn--primary" onClick={() => window.location.reload()}>
+            <button type="button" className="btn-primary w-fit" onClick={() => window.location.reload()}>
               রিফ্রেশ করুন
             </button>
           </div>
