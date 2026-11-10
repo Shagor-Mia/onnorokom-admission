@@ -20,3 +20,6 @@ dist/
 Thumbs.db
 .idea/
 .vscode/
+
+# Local AI/dev tooling (Playwright MCP config)
+.mcp.json
