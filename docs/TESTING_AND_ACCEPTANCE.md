@@ -67,7 +67,7 @@ Evidence key: **BT** = backend automated test, **FT** = frontend automated test,
 | Bonus: frontend automated tests | PASS | 21 Vitest tests + 28 Playwright UI tests (every screen, button, form, filter and dialog) |
 | README, ASSUMPTIONS.md, AI_USAGE.md | PASS | Updated |
 | Incremental commit history | PASS | One commit per step |
-| Assignment PDF not public | **OPEN** | `onno.pdf` is committed in history (commit `7fb1852`); must be removed before the repository is made public |
+| Assignment PDF not public | PASS (repo) | `onno.pdf` removed from every commit (history rewritten 2026-11-10) and listed in `.gitignore`; a fresh clone contains no trace of it. GitHub may still serve the old commit page from its cache until GitHub Support purges it |
 
 ### Known environment note
 
