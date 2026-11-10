@@ -2,14 +2,19 @@
 
 ## Tools and where they were used
 
+I built this project with three AI coding assistants: **Claude Opus 5.5**, **Antigravity** and
+**GitHub Copilot**. Claude Opus 5.5 was used the most by far, above all for debugging, fixing and verifying
+that everything works as the assignment PDF requires.
+
 | Tool | Used for |
 |---|---|
-| GitHub Copilot (VS Code agent) | First backend version: requirement breakdown, phased plan, .NET solution, EF Core schema/migration, hold lifecycle, first PostgreSQL tests |
-| Claude Code (VS Code) | Audit of the code against the assignment PDF; backend fixes (CORS, worker resilience, error codes, timestamps, migration lock); HTTP contract/concurrency tests; the whole React frontend and its tests; Dockerfiles and `docker-compose.yml`; README/ASSUMPTIONS |
+| **Claude Opus 5.5** (in Claude Code, VS Code) — *used the most* | Debugging and fixing; checking the code against the assignment PDF; backend fixes (CORS, worker resilience, error codes, timestamps, migration lock, connection pool for two backends, configurable connection string); HTTP contract and concurrency tests; the whole React frontend and its tests; Dockerfiles and `docker-compose.yml`; walking through every screen in real Chrome with Playwright and fixing what it found; the Playwright end-to-end test suite (`e2e/`); README, ASSUMPTIONS and this file |
+| **Antigravity** | AI coding agent used alongside the others while building the project (the shared agent rules are in `AGENTS.md`) |
+| **GitHub Copilot** (VS Code agent) | First backend version: requirement breakdown, phased plan, .NET solution, EF Core schema/migration, hold lifecycle, first PostgreSQL tests |
 | Google Stitch | Visual mock-ups in `UI/` (used only as a style reference) |
 
 Every claim of "passing" below comes from commands that were actually run (Docker: `dotnet test`,
-`npm test`, `docker compose up`, curl checks).
+`npm test`, Playwright, `docker compose up`, curl checks).
 
 ## Mistakes the AI made and how they were caught
 
