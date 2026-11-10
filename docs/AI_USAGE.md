@@ -1,52 +1,43 @@
-# AI Usage Disclosure
+# AI Usage
 
-> Complete this honestly before submission. Do not claim that AI-generated code was fully verified unless you personally ran the checks.
+## Tools and where they were used
 
-## 1. AI tools used
+| Tool | Used for |
+|---|---|
+| GitHub Copilot (VS Code agent) | First backend version: requirement breakdown, phased plan, .NET solution, EF Core schema/migration, hold lifecycle, first PostgreSQL tests |
+| Claude Code (VS Code) | Audit of the code against the assignment PDF; backend fixes (CORS, worker resilience, error codes, timestamps, migration lock); HTTP contract/concurrency tests; the whole React frontend and its tests; Dockerfiles and `docker-compose.yml`; README/ASSUMPTIONS |
+| Google Stitch | Visual mock-ups in `UI/` (used only as a style reference) |
 
-| Tool | Purpose | Parts assisted |
-|---|---|---|
-| Copilot SDK in VS Code | Requirements analysis, phased planning, implementation, and validation | Backend foundation and API/lifecycle phases |
+Every claim of "passing" below comes from commands that were actually run (Docker: `dotnet test`,
+`npm test`, `docker compose up`, curl checks).
 
-## 2. How AI assistance was used
+## Mistakes the AI made and how they were caught
 
-Describe the actual assistance received. Examples:
-- Requirement breakdown and architecture planning.
-- Initial code scaffolding.
-- API/controller/service implementation suggestions.
-- React component and styling assistance.
-- Test-case generation.
-- Docker and README drafting.
+1. **"All tests pass" was not true everywhere.** The first test setup used a connection pool of 100 —
+   equal to PostgreSQL's default `max_connections` — and failed with `53300 too many clients` on a fresh
+   database. *Caught* by re-running the suite in a clean Docker PostgreSQL. *Fixed* with a smaller test pool,
+   pool cleanup, and a test database with a higher limit.
+2. **No CORS.** The backend would have rejected every call from the React UI on another port; the API-only
+   tests could not notice. *Caught* in the PDF audit ("সব কাজ UI থেকেই"). *Fixed* + a CORS preflight test.
+3. **Background worker could stop the whole API.** An unhandled database error in a .NET 8
+   `BackgroundService` stops the host. *Caught* in code review. *Fixed* with try/catch + logging.
+4. **Contract details:** malformed IDs returned `400` instead of `404`; timestamps were `…+00:00` with
+   7 fraction digits instead of `…Z`, and the create and read responses showed different precision.
+   *Caught* while comparing responses with the PDF examples. *Fixed* + tests that assert the format.
+5. **Handled `409`s were logged as "unhandled exception" with stack traces** (the .NET 8 exception
+   middleware logs before custom handlers). *Caught* by reading the test logs. *Fixed* by mapping business
+   errors in an MVC exception filter.
+6. **Test-only migration conflict:** running migrations twice in a non-`public` schema failed because
+   Npgsql looks for the history table in `public`. *Caught* from the test log. *Fixed* by letting the tests
+   prepare the schema and skip start-up migration.
+7. **AI-written UI guide contained invented content** (a government-approval banner, a school name, a
+   helpline number, a "PDF download" button, and the label "আসন বুক করুন" instead of the PDF's
+   "আবেদন করুন"). *Caught* by checking it against the PDF. Not implemented; the UI follows the PDF.
+8. **A false alarm from the AI's own check script:** a shell-quoting bug in the curl concurrency check reported
+   0 successes. *Caught* because it contradicted the passing automated tests; re-run correctly it showed
+   exactly 10 × `201` and 50 × `409`.
 
-This session used the project specifications to plan and implement the .NET
-backend foundation, PostgreSQL model, API routes, transactional hold lifecycle,
-expiry worker, and PostgreSQL-backed tests. Frontend and Compose implementation
-remain pending.
+## Responsibility
 
-## 3. Important AI mistakes or limitations
-
-The first build found an expression-tree-incompatible enum converter and a
-missing hosting framework reference; both were corrected. PostgreSQL smoke
-checks also found invalid validation metadata on a positional record and an
-EF Core ordering-after-projection translation error; both were corrected and
-the route checks were rerun. Initial concurrency-test runs hit PostgreSQL
-connection timeouts under load; the focused rerun and full suite passed after
-the test-only connection and command timeouts were increased.
-
-## 4. Verification performed
-
-| Area | Verification performed | Result |
-|---|---|---|
-| API contract | Manual route smoke checks against an isolated PostgreSQL instance | Tested routes and response shapes passed; full acceptance remains pending |
-| Concurrent seat allocation | Full PostgreSQL-backed test suite, including 100 simultaneous requests for 10 seats | Passed: exactly 10 successes, 90 capacity conflicts, and 10 occupied seats |
-| Expiry behavior | PostgreSQL-backed hold lifecycle test and manual smoke check | Passed for the exercised lifecycle; background-worker timing races remain untested |
-| Idempotent confirmation | Repeated confirmation of a confirmed hold | Passed |
-| UI flows | Not run | Frontend is pending |
-| Docker startup | Built and ran the backend image with isolated PostgreSQL; startup migrations and readiness passed | Passed for backend only; Compose remains pending |
-| Data persistence | Not run across container restart | Pending Docker/acceptance phase |
-
-## 5. Final responsibility
-
-The candidate remains responsible for reviewing and testing the final
-submission. AI assistance does not replace responsibility for correctness,
-security, and honest reporting.
+The AI output was reviewed and tested before being kept; the candidate remains responsible for the
+correctness of the submission.

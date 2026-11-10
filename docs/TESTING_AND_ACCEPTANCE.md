@@ -1,101 +1,74 @@
-# Testing and Acceptance Checklist
+# Testing and Acceptance
 
-Use this checklist before calling the assignment complete.
+## How to run
 
-## Running PostgreSQL-backed tests
-
-Set `TEST_DATABASE_CONNECTION` to a PostgreSQL connection string, then run:
-
-```powershell
-dotnet test backend/SchoolAdmission.sln
+```bash
+docker compose --profile test run --rm backend-tests    # 18 backend tests (unit + PostgreSQL)
+docker compose --profile test run --rm frontend-tests   # 16 frontend tests (Vitest)
+docker compose --profile test rm -sf test-db            # remove the throwaway test database
 ```
 
-The integration tests create a unique temporary schema per test and drop only
-that schema afterward. The configured database user must be allowed to create
-and drop schemas. Without `TEST_DATABASE_CONNECTION`, PostgreSQL integration
-tests are explicitly skipped; unit tests still run.
+Without Docker: set `TEST_DATABASE_CONNECTION` and run `dotnet test backend/SchoolAdmission.sln`
+(the integration tests are skipped when the variable is missing); `cd frontend && npm ci && npm test`.
+Each backend integration test uses its own temporary PostgreSQL schema and drops it afterwards.
 
-## 1. Backend functional tests
+## Results (last run: 2026-11-10, Docker Desktop on Windows)
 
-- [ ] Create a class with valid name and positive capacity returns `201`.
-- [ ] Invalid class payload returns 4xx, not 500.
-- [ ] List classes returns correct seat metrics.
-- [ ] Get class returns correct metrics.
-- [ ] Unknown class returns 404.
-- [ ] Hold request with missing/invalid `X-Student-Id` returns 4xx.
-- [ ] Valid hold returns `201` and `HELD`.
-- [ ] Hold expiry is based on `HOLD_DURATION_SECONDS`.
-- [ ] No-seat request returns `409`.
-- [ ] Student cannot create a duplicate active hold for same class.
-- [ ] Student cannot create a new hold for a class already confirmed by that student.
-- [ ] Hold status endpoint reports all four statuses correctly.
-- [ ] Only owner can confirm.
-- [ ] Confirming before expiry returns `200` and `CONFIRMED`.
-- [ ] Confirming an already confirmed hold is idempotent.
-- [ ] Confirming an expired/cancelled hold fails with 4xx/409.
-- [ ] Only owner can cancel.
-- [ ] Successful cancellation returns `204`.
-- [ ] `/me/holds` returns only the supplied student's records.
+Evidence key: **BT** = backend automated test, **FT** = frontend automated test,
+**E2E** = curl/PowerShell checks against the running `docker compose` stack,
+**—** = not verified yet.
 
-## 2. Critical concurrency test
+### Mandatory backend rules (PDF §1.5)
 
-- [ ] Create a class with 10 seats.
-- [ ] Send 100 concurrent hold requests with distinct valid student IDs.
-- [ ] Exactly 10 requests succeed with `201`.
-- [ ] The remaining requests fail with `409` (not 500).
-- [ ] Database occupancy never exceeds 10.
-- [ ] Repeat the test enough times to catch race conditions.
-- [ ] Run against PostgreSQL.
+| Rule | Result | Evidence |
+|---|---|---|
+| `held + confirmed` never exceeds `totalSeats`, however many concurrent requests | PASS | BT: 100 concurrent → 10 × success / 90 × 409; 60 concurrent HTTP → 5 / 55. E2E: 60 parallel curl → 10 × 201 / 50 × 409 |
+| Hold duration from `HOLD_DURATION_SECONDS` (default 600) | PASS | BT: `expiresAt` ≈ now + 600 s; 2 s override. E2E: `HOLD_DURATION_SECONDS=5` → `expiresAt` = now + 5 s |
+| Expired seat returns by itself, no API call needed | PASS | BT: worker marks `EXPIRED` with no request. E2E: after 12 s the DB row was `EXPIRED`, seat available, next student got `HELD` |
+| One active application / confirmed admission per student per class | PASS | BT: 20 concurrent same-student requests → 1 hold; duplicate → 409; confirmed student re-apply → 409 |
+| Only own, unexpired `HELD` can be confirmed | PASS | BT + E2E: other student → 403; expired → 409 `HOLD_EXPIRED`; cancelled → 409 |
+| Repeated confirm increments `confirmedSeats` once | PASS | BT: 3 sequential + 20 concurrent confirms → `confirmedSeats` = 1. E2E: confirm twice → 1 |
+| No data loss on restart / `docker compose down` + `up` | PASS | E2E: class list and counts identical before and after `down`/`up` (volume `pgdata`) |
+| Invalid input → 4xx, not 500 | PASS | BT: 11 bad `POST /classes` bodies → 400; 6 bad `X-Student-Id` values × 4 routes → 400; unknown/malformed IDs → 404 |
 
-## 3. Expiry and idempotency
+### API contract (PDF §1.4)
 
-- [ ] Set a short hold duration in a test environment.
-- [ ] Create a hold and allow it to expire.
-- [ ] Verify the seat becomes available without a manual expiry API call.
-- [ ] Verify status becomes `EXPIRED`.
-- [ ] Verify the frontend disables confirmation.
-- [ ] Confirm the same hold twice; confirmed occupancy increases once only.
-- [ ] Race confirm against expiry and verify only one valid terminal outcome.
+| Check | Result | Evidence |
+|---|---|---|
+| All 8 routes, methods, status codes (201/200/204/404/409) | PASS | BT `ApiContractTests`, E2E smoke |
+| Exact field names (`id,name,totalSeats`; `holdId,classId,studentId,status,expiresAt`; …) | PASS | BT asserts the exact key set for responses 1, 2, 4, 6 and required keys for 3, 5, 8 |
+| Status values `HELD/CONFIRMED/EXPIRED/CANCELLED` | PASS | BT |
+| Timestamps UTC ISO-8601 with `Z` | PASS | BT + E2E (`2026-11-10T11:30:31Z`) |
 
-## 4. Frontend tests / manual checks
+### UI rules (PDF §1.3, §1.5)
 
-- [ ] Student ID accepts exactly 17 digits and gives a clear validation message.
-- [ ] Current student identity survives page refresh/reopen.
-- [ ] Class list shows total, held, confirmed, and available seats.
-- [ ] Seat data refreshes every few seconds.
-- [ ] Guardian can create a hold from UI.
-- [ ] Guardian can see expiry/status.
-- [ ] Guardian can confirm from UI.
-- [ ] Guardian can cancel from UI.
-- [ ] Guardian can see their application history.
-- [ ] Expired hold remains visible as `EXPIRED`.
-- [ ] Confirm button is disabled for expired/cancelled holds.
-- [ ] 409 no-seat and duplicate messages are understandable.
-- [ ] Loading, empty, error, and success states are present.
-- [ ] No blank page or console-only error.
-- [ ] Admin can create a class from UI.
-- [ ] Admin can view seat counts from UI.
-- [ ] UI is usable on mobile, tablet, and desktop.
-- [ ] Keyboard focus and labels are usable.
+| Rule | Result | Evidence |
+|---|---|---|
+| Everything works from the UI (no Postman/DB) | PASS (automated) / — (browser) | FT covers create class, apply, pay, history; every API call needed by the UI was checked E2E incl. CORS. A manual walkthrough in a real browser has **not** been done here. |
+| Student ID box at the top of the page, no login | PASS | FT `StudentIdBar` (17-digit validation, saved) |
+| Expired → `EXPIRED` without reload, "ভর্তি ফি দিন" disabled | PASS (automated) | FT: hold expiring in 1.5 s flips to EXPIRED and disables both buttons |
+| Seat counts refresh every few seconds without reload | PASS (by design + code) | `GET /classes` polled every 4 s (`usePolling`); not separately asserted by a test |
+| Refresh / reopen browser → student still sees their applications | PASS (automated) | FT: ID restored from `localStorage`, `/me/holds` sent with it |
+| Errors in plain language (no seats, expired, bad input, server down), no blank page | PASS (automated) | FT: 409 → Bengali message, server down → connection message; unit tests for every error code; error boundary |
+| Responsive / keyboard / labels | — | CSS has mobile breakpoints, labelled inputs, visible focus, native `<dialog>`; not checked on real devices |
 
-## 5. Docker and persistence
+### Docker and submission (PDF §1.2, §1.7)
 
-- [ ] Root `docker-compose.yml` exists.
-- [ ] `docker compose up --build` starts DB, backend, and frontend.
-- [ ] Backend is reachable at `http://localhost:8080`.
-- [ ] Frontend can call backend using configurable API base URL.
-- [ ] Database health check/readiness is handled.
-- [ ] PostgreSQL uses a named volume.
-- [ ] Create a class/application, run `docker compose down`, then `docker compose up`.
-- [ ] Previously stored data still exists.
-- [ ] No host-installed .NET/Node/PostgreSQL is needed for the evaluator's normal run.
+| Check | Result | Evidence |
+|---|---|---|
+| Root `docker-compose.yml`; `docker compose up` starts PostgreSQL, backend, frontend | PASS | E2E (no `.env` file present) |
+| Backend on `http://localhost:8080` | PASS | E2E |
+| DB connection and frontend→backend URL via environment variables | PASS | `ConnectionStrings__DefaultConnection`; `VITE_API_BASE_URL` → `/config.js` at start (E2E read it back) |
+| Dockerfiles for backend and frontend | PASS | `backend/Dockerfile`, `frontend/Dockerfile` |
+| ≥ 3 backend automated tests incl. a concurrency test | PASS | 18 tests, 5 of them concurrency tests |
+| Bonus: two backend processes, one database | PASS | BT (two hosts) + E2E (`--profile multi`: 80 requests over :8080/:8081 → 10 × 201, 70 × 409) |
+| Bonus: frontend automated tests | PASS | 16 Vitest tests |
+| README, ASSUMPTIONS.md, AI_USAGE.md | PASS | Updated |
+| Incremental commit history | PASS | One commit per step |
+| Assignment PDF not public | **OPEN** | `onno.pdf` is committed in history (commit `7fb1852`); must be removed before the repository is made public |
 
-## 6. Documentation and submission
+### Known environment note
 
-- [ ] README has setup, run, test, and usage instructions.
-- [ ] `ASSUMPTIONS.md` explains decisions and reasons.
-- [ ] `AI_USAGE.md` accurately lists AI assistance and verification.
-- [ ] No credentials/secrets are committed.
-- [ ] No generated code is falsely described as tested.
-- [ ] Git history contains incremental commits.
-- [ ] Public GitHub repository is accessible.
+On Windows, Docker Compose v5 run from **Git Bash** fails the image build with
+`additional privileges requested: pass "--allow=fs.read=…Dockerfile"` (MSYS path conversion).
+The same command works in PowerShell and Command Prompt.

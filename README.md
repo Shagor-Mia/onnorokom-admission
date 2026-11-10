@@ -1,231 +1,157 @@
 # School Admission System
 
-A full-stack school admission application built for the **Assistant Software Engineer take-home assignment**.
+A first-come-first-served school admission system: **ASP.NET Core (.NET 8) + PostgreSQL + React 18 (TypeScript, Vite) + Docker**.
 
-> **Assignment stack:** .NET 8+ · PostgreSQL · React 18+ · Docker  
-> **Expected startup:** `docker compose up --build`  
-> **Backend URL:** `http://localhost:8080`
+Each class/shift (e.g. `Class 6 - Morning Shift`) has a fixed number of seats. A guardian enters the
+student's 17-digit birth registration number, applies for a class (the seat is **held** for a limited
+time), and pays the admission fee (simulated) to **confirm** it. If the fee is not paid in time the hold
+**expires** and the seat is released automatically. School admins create classes and watch seat counts.
+Everything is done from the UI.
 
-This repository is designed to be built and maintained with an AI coding agent such as **Antigravity, Claude Code, Cursor, or another agent**. Read `AGENTS.md` first; it is the shared instruction contract for all agents.
+> Demo limitations: the payment is simulated (no real transaction), the birth registration number is a
+> client-supplied identifier (not secure identity verification), and the admin screen has no login.
+> See [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md).
 
-## 1. Project goal
+## 1. Run with Docker
 
-Build a first-come-first-served admission system. Each school class/shift has a fixed seat capacity. A guardian identifies a student using the 17-digit birth registration number. Creating an application temporarily holds one seat. If the guardian confirms the simulated admission fee before the hold expires, the application becomes confirmed. Otherwise, the seat is released automatically.
+The only requirement is Docker (Docker Desktop or Docker Engine with the Compose plugin).
+No .NET SDK, Node.js or PostgreSQL installation is needed.
 
-This is an assignment/demo system, not a production payment or identity-verification platform.
+```bash
+docker compose up
+```
 
-## 2. Main capabilities
+The first start builds the images (a few minutes). Then open:
 
-### Parent / guardian
-- Enter a student's 17-digit birth registration number; no login or password flow.
-- Browse classes/shifts and see total, held, confirmed, and available seats.
-- Create an admission hold for a class with available seats.
-- View the current hold status and expiry time.
-- Confirm admission using the simulated **“ভর্তি ফি দিন”** action.
-- Cancel an active hold.
-- View the student's applications.
-- See expired applications after refresh/reopen; an expired hold cannot be confirmed.
-
-### School admin
-- Create a class/shift and configure its seat capacity.
-- View all classes and their seat counts.
-- Use the UI for all operations; no Postman or direct database interaction is required for normal evaluation.
-
-> The assignment does not define admin authentication. Keep the admin interface clearly separated in the UI, and document the chosen demo assumption in `docs/ASSUMPTIONS.md`. Do not invent a complex authentication requirement.
-
-## 3. Technology decisions
-
-| Layer | Required / recommended |
+| What | URL |
 |---|---|
-| Backend | C# with .NET 8 or newer, ASP.NET Core Web API |
-| Database | PostgreSQL |
-| ORM | Entity Framework Core with Npgsql |
-| Frontend | React 18+ with TypeScript |
-| Frontend tooling | Vite |
-| UI | Tailwind CSS and a consistent component system (agent may choose) |
-| Runtime | Docker and Docker Compose |
-| Tests | xUnit for backend; React Testing Library/Vitest for frontend where useful |
+| **Frontend (UI)** | **http://localhost:5173** |
+| Backend API | http://localhost:8080 |
+| Backend health | http://localhost:8080/health/ready |
 
-Use stable, mutually compatible package versions. Do not add unnecessary services or infrastructure.
+No `.env` file is needed — every setting has a default. To change a value, copy `.env.example` to `.env`
+and edit it (or set the variable in the shell).
 
-## 4. Repository layout
+> **Windows:** run the commands from PowerShell or Command Prompt. With Docker Compose v5, Git Bash
+> (MSYS) can fail the build with `additional privileges requested: pass "--allow=fs.read=…Dockerfile"`
+> because of its path conversion; PowerShell/cmd (and macOS/Linux shells) are not affected.
+
+Stop with `Ctrl+C` or `docker compose down`. Data is stored in the named volume `pgdata`, so it survives
+`docker compose down` followed by `docker compose up`. (`docker compose down -v` deletes the volume and
+therefore all data.)
+
+## 2. Using the app
+
+1. Open http://localhost:5173. At the top of every page there is a box for the student's
+   **জন্ম নিবন্ধন নম্বর** (17 digits; Bengali digits are accepted). Save it — it is remembered after a page
+   refresh or browser restart. There is no login.
+2. **School admin** (menu) → create classes, e.g. `Class 6 - Morning Shift` with 120 seats and
+   `Class 6 - Day Shift` with 100 seats. The table shows total / held / confirmed / available seats and
+   refreshes automatically.
+3. **Class তালিকা** → every class with total, held, confirmed and available seats (refreshes every few
+   seconds) → **আবেদন করুন**.
+4. **আবেদন** screen → status, time left before the hold expires, **ভর্তি ফি দিন** (simulated payment →
+   `CONFIRMED`) and **বাতিল** (cancel → seat released). When time runs out the screen switches to
+   `EXPIRED` and the pay button is disabled, without reloading the page.
+5. **আমার আবেদন** → all applications of the current student with their status.
+
+Tip: to see expiry quickly, start with a short hold time: `HOLD_DURATION_SECONDS=60 docker compose up`.
+
+## 3. Configuration
+
+| Variable | Used by | Default | Purpose |
+|---|---|---|---|
+| `HOLD_DURATION_SECONDS` | backend | `600` | How long a seat stays held |
+| `ConnectionStrings__DefaultConnection` | backend | built from the `POSTGRES_*` values, host `db` | PostgreSQL connection |
+| `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | db, backend | `school_admission` / `app` / `app_local_password` | Database (local demo credentials) |
+| `VITE_API_BASE_URL` | frontend | `http://localhost:8080` | Backend URL used by the browser; read when the frontend container starts, so no rebuild is needed |
+| `CORS_ALLOWED_ORIGINS` | backend | `http://localhost:5173,http://127.0.0.1:5173` | Origins allowed to call the API (comma-separated or `*`) |
+| `FRONTEND_PORT` | compose | `5173` | Host port of the UI (add the new origin to `CORS_ALLOWED_ORIGINS` too) |
+
+## 4. Running the tests
+
+All tests run in Docker (nothing else to install):
+
+```bash
+# Backend: unit + PostgreSQL integration tests, including the concurrency tests
+docker compose --profile test run --rm backend-tests
+
+# Frontend: Vitest + Testing Library
+docker compose --profile test run --rm frontend-tests
+
+# Remove the throwaway test database afterwards (the app and its data are untouched)
+docker compose --profile test rm -sf test-db
+```
+
+The backend tests use a separate throwaway PostgreSQL (`test-db`, in memory) and never touch the app
+data. They cover, among others:
+
+- **Concurrency:** 100 simultaneous hold requests for 10 seats → exactly 10 `201`, 90 `409`;
+  60 simultaneous HTTP requests for 5 seats; 20 simultaneous requests by the same student → one hold;
+  20 simultaneous confirmations → `confirmedSeats` increases once.
+- **Two backend instances** sharing one database (bonus) → capacity is never exceeded.
+- The exact JSON fields and status codes of all 8 routes, invalid input → `400`, unknown IDs → `404`.
+- Expiry: the seat is released and confirmation is rejected after `HOLD_DURATION_SECONDS`; the background
+  worker marks holds `EXPIRED` without any request.
+
+Without Docker (needs .NET 8 SDK / Node 20): `dotnet test backend/SchoolAdmission.sln` (set
+`TEST_DATABASE_CONNECTION` to a PostgreSQL connection string, otherwise the integration tests are
+skipped) and `cd frontend && npm ci && npm test`.
+
+## 5. API
+
+Base URL `http://localhost:8080`, JSON in and out, timestamps in UTC ISO-8601 (`2026-11-01T04:10:00Z`).
+Student-specific calls use the `X-Student-Id` header (17 digits).
+
+| # | Method & path | Purpose | Success |
+|---|---|---|---|
+| 1 | `POST /classes` | Create a class `{ "name", "totalSeats" }` | `201` |
+| 2 | `GET /classes` | All classes with seat counts | `200` |
+| 3 | `GET /classes/{classId}` | One class with seat counts | `200` |
+| 4 | `POST /classes/{classId}/holds` | Apply (hold a seat) — `409` if no seat | `201` |
+| 5 | `GET /holds/{holdId}` | Hold status | `200` |
+| 6 | `POST /holds/{holdId}/confirm` | Pay fee (simulated) and confirm; idempotent | `200` |
+| 7 | `DELETE /holds/{holdId}` | Cancel | `204` |
+| 8 | `GET /me/holds` | All applications of the student | `200` |
+
+Response fields follow [docs/API_CONTRACT.md](docs/API_CONTRACT.md) exactly; a few extra fields
+(`className`, `createdAt`, `confirmedAt`, `cancelledAt`) are added to hold responses 5 and 8.
+
+Errors are RFC 7807 Problem Details with a machine-readable `code`:
+
+| Status | `code` | When |
+|---|---|---|
+| 400 | `VALIDATION_FAILED`, `INVALID_STUDENT_ID` | Bad body / missing or non-17-digit `X-Student-Id` |
+| 403 | `HOLD_NOT_OWNED` | Confirm/cancel someone else's hold |
+| 404 | `CLASS_NOT_FOUND`, `HOLD_NOT_FOUND` | Unknown (or malformed) ID |
+| 409 | `NO_SEATS_AVAILABLE`, `DUPLICATE_ACTIVE_APPLICATION`, `HOLD_EXPIRED`, `HOLD_NOT_ACTIVE` | Business rule conflicts |
+
+## 6. How seat safety works (short)
+
+- Creating a hold runs in one PostgreSQL transaction that locks the class row (`SELECT … FOR UPDATE`),
+  expires stale holds, checks duplicates and capacity, and inserts the hold. All requests for a class —
+  from any number of backend processes — are therefore serialized by the database.
+- Only unexpired `HELD` + `CONFIRMED` rows count as occupied, so an expired hold never blocks a seat, even
+  before the background worker (every 5 s) marks it `EXPIRED`.
+- Confirm/cancel lock the hold row; repeated confirmation returns the same result without counting again.
+- A partial unique index allows only one active (`HELD`/`CONFIRMED`) application per student and class.
+
+Bonus demo — a second backend on port 8081 using the same database:
+
+```bash
+docker compose --profile multi up
+```
+
+Details: [docs/DATABASE_AND_CONCURRENCY.md](docs/DATABASE_AND_CONCURRENCY.md) and
+[docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md).
+
+## 7. Repository layout
 
 ```text
-school-admission-system/
-├── AGENTS.md
-├── README.md
-├── docker-compose.yml
-├── .env.example
-├── .gitignore
-├── docs/
-│   ├── PROJECT_SPEC.md
-│   ├── ARCHITECTURE.md
-│   ├── API_CONTRACT.md
-│   ├── DATABASE_AND_CONCURRENCY.md
-│   ├── IMPLEMENTATION_PLAN.md
-│   ├── TESTING_AND_ACCEPTANCE.md
-│   ├── ASSUMPTIONS.md
-│   └── AI_USAGE.md
-├── prompts/
-│   └── STITCH_MASTER_PROMPT.md
-├── backend/
-│   ├── SchoolAdmission.Api/
-│   ├── SchoolAdmission.Application/
-│   ├── SchoolAdmission.Domain/
-│   ├── SchoolAdmission.Infrastructure/
-│   ├── SchoolAdmission.Tests/
-│   └── Dockerfile
-└── frontend/
-    ├── src/
-    │   ├── app/
-    │   ├── components/
-    │   ├── features/
-    │   ├── hooks/
-    │   ├── lib/
-    │   ├── pages/
-    │   └── types/
-    ├── public/
-    ├── Dockerfile
-    └── ...
+backend/                 ASP.NET Core solution (Api, Application, Domain, Infrastructure, Tests) + Dockerfile
+frontend/                React + TypeScript + Vite app + Dockerfile (nginx)
+docker-compose.yml       db, backend, frontend (+ test and multi profiles)
+docs/ASSUMPTIONS.md      Decisions where the brief is not explicit, and why
+docs/AI_USAGE.md         Which AI tools were used, where, and the mistakes they made
+docs/                    Specification, API contract, concurrency design, test checklist
 ```
-
-This is a recommended structure, not a requirement to preserve every folder if a simpler, well-organized implementation is more appropriate. Keep backend and frontend separate.
-
-## 5. Run with Docker
-
-### Prerequisites
-- Docker Desktop or Docker Engine with the Compose plugin.
-- No local .NET SDK, Node.js, or PostgreSQL installation should be required to run the complete application.
-
-### Start
-
-```bash
-cp .env.example .env
-docker compose up --build
-```
-
-Open:
-- Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:8080`
-- Swagger/OpenAPI (if enabled): `http://localhost:8080/swagger`
-
-The assignment explicitly requires the backend to be reachable at `http://localhost:8080`. The frontend port above is a recommended development/demo port; document any different chosen port.
-
-### Stop
-
-```bash
-docker compose down
-```
-
-To verify persistence, start again:
-
-```bash
-docker compose up --build
-```
-
-Do **not** use `docker compose down -v` when checking persistence; `-v` deletes the database volume.
-
-## 6. Environment variables
-
-The exact variable names may be extended, but these must be supported:
-
-| Variable | Purpose | Default |
-|---|---|---|
-| `HOLD_DURATION_SECONDS` | Duration of a seat hold | `600` |
-| `ConnectionStrings__DefaultConnection` or `DATABASE_URL` | PostgreSQL connection | Compose internal DB |
-| `VITE_API_BASE_URL` | Frontend API base URL | `http://localhost:8080` |
-| `POSTGRES_DB` | Database name | `school_admission` |
-| `POSTGRES_USER` | Database user | `app` |
-| `POSTGRES_PASSWORD` | Local development password | Set in `.env` |
-
-Never commit real secrets. The frontend API URL must be configurable through an environment variable.
-
-## 7. API overview
-
-The required API contract is documented in [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md).
-
-| Method | Path | Purpose |
-|---|---|---|
-| `POST` | `/classes` | Create a class/shift |
-| `GET` | `/classes` | List classes with seat counts |
-| `GET` | `/classes/{classId}` | Get one class with seat counts |
-| `POST` | `/classes/{classId}/holds` | Hold one seat |
-| `GET` | `/holds/{holdId}` | Get hold status |
-| `POST` | `/holds/{holdId}/confirm` | Confirm admission |
-| `DELETE` | `/holds/{holdId}` | Cancel a hold |
-| `GET` | `/me/holds` | List the current student's applications |
-
-Student-specific operations use the `X-Student-Id` header containing the 17-digit birth registration number.
-
-## 8. Critical business rules
-
-1. `heldSeats + confirmedSeats` must never exceed `totalSeats`, even under concurrent requests.
-2. A new hold reserves one seat until its expiry.
-3. `HOLD_DURATION_SECONDS` controls the hold duration; default is 600 seconds.
-4. Expired holds must release seats automatically without requiring a guardian to call an API.
-5. A student cannot have more than one active hold or confirmed admission for the same class at a time. Record any interpretation of edge cases in `docs/ASSUMPTIONS.md`.
-6. A student can only confirm or cancel their own hold.
-7. Confirming the same hold repeatedly must be idempotent; `confirmedSeats` increments only once.
-8. Persist all data across container restarts.
-9. Invalid input must return a suitable 4xx response, never an avoidable 500.
-10. The UI must show `EXPIRED` after expiry and disable the payment/confirmation action.
-11. Seat counts should refresh every few seconds.
-12. All core operations must be possible from the UI.
-
-The concurrency and expiry design is more important than decorative UI details. See `docs/DATABASE_AND_CONCURRENCY.md`.
-
-## 9. Build and test
-
-Backend (run inside the backend container or local SDK environment):
-
-```bash
-dotnet test
-```
-
-Frontend (run inside the frontend container or local Node environment):
-
-```bash
-npm run test
-npm run build
-```
-
-At minimum, add automated tests for:
-- Concurrent hold attempts against a limited number of seats.
-- Expired holds releasing capacity.
-- Repeated confirmation being idempotent.
-
-The complete acceptance checklist is in [`docs/TESTING_AND_ACCEPTANCE.md`](docs/TESTING_AND_ACCEPTANCE.md).
-
-## 10. AI-agent workflow
-
-1. Open the repository root in Antigravity, Claude Code, Cursor, or another coding agent.
-2. Ask the agent to read `AGENTS.md` and every relevant file under `docs/`.
-3. Ask it to inspect the current repository before changing files.
-4. Have it implement one phase at a time from `docs/IMPLEMENTATION_PLAN.md`.
-5. Require it to run tests/builds and report actual results after each phase.
-6. Review all generated code, migrations, and concurrency behavior yourself.
-7. Keep commits small and incremental.
-
-Suggested first prompt:
-
-> Read `AGENTS.md`, `README.md`, and all files in `docs/`. Do not write code yet. First summarize the requirements, identify ambiguities, propose the database schema and concurrency strategy, and list the implementation phases. Wait for my approval before implementation.
-
-## 11. Submission checklist
-
-- [ ] Public GitHub repository.
-- [ ] Root-level `docker-compose.yml`.
-- [ ] Backend and frontend in separate folders.
-- [ ] `docker compose up --build` starts PostgreSQL, backend, and frontend.
-- [ ] Backend reachable at `http://localhost:8080`.
-- [ ] Database volume persists after `docker compose down` and a subsequent `up`.
-- [ ] Required API endpoints and response shapes implemented.
-- [ ] All guardian/admin operations work from the UI.
-- [ ] At least three meaningful automated tests.
-- [ ] `docs/ASSUMPTIONS.md` explains important decisions.
-- [ ] `docs/AI_USAGE.md` honestly documents AI assistance, mistakes, and verification.
-- [ ] README includes run, test, and usage instructions.
-- [ ] Incremental Git commit history; avoid one giant final commit.
-
-## 12. Scope and disclaimer
-
-The assignment brief is the source of truth. If a detail is not specified, choose a minimal, defensible behavior and record it in `docs/ASSUMPTIONS.md`. Do not silently turn assumptions into requirements. Do not claim production-grade security or real payment processing.

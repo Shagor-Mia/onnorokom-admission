@@ -35,11 +35,25 @@ these documents or mockups.
   An isolated PostgreSQL smoke run covered class creation/list/detail, hold
   creation, ownership, duplicate handling, confirmation idempotency,
   cancellation idempotency, seat metrics, validation, and expiry.
-- **Phase 3 — Automated backend/concurrency tests:** Complete. The full
-  PostgreSQL-backed suite passed all five tests, including 100 simultaneous
-  distinct-student requests (exactly 10 successes and 90 capacity conflicts),
-  same-student duplicate prevention, and hold lifecycle coverage.
-- **Phases 4–7 — Frontend, Docker Compose, and acceptance:** Pending.
+- **Phase 3 — Automated backend/concurrency tests:** Complete. Note: on a fresh
+  PostgreSQL the original five-test suite failed once (`too many clients`; the
+  test pool equalled PostgreSQL's connection limit). Fixed in Phase 3.5.
+- **Phase 3.5 — PDF audit fixes:** Complete. CORS, crash-safe expiry worker,
+  `404` for malformed IDs, `code` in problem details, `…Z` timestamps,
+  additive hold fields, migration retry + advisory lock, 13 HTTP contract tests
+  (all routes, validation, concurrency, idempotent confirm, expiry, worker,
+  two backend instances, CORS). 18/18 backend tests pass.
+- **Phases 4–5 — Frontend (guardian + admin):** Complete. React 18 + TypeScript
+  + Vite; student ID box at the top of every page; class list, application,
+  my applications and admin screens; polling; client-side expiry; Bengali
+  error messages. 16/16 Vitest tests pass; type-check and production build pass.
+- **Phase 6 — Docker Compose:** Complete. `docker compose up` (no `.env`) starts
+  db/backend/frontend; persistence across `down`/`up`, `HOLD_DURATION_SECONDS`
+  expiry and a two-backend run were verified by hand; tests run through the
+  `test` profile.
+- **Phase 7 — Acceptance audit:** Results recorded in `TESTING_AND_ACCEPTANCE.md`.
+  Open items: browser-based manual UI walkthrough (not automated here) and the
+  confidentiality of `onno.pdf` in Git history (owner decision).
 
 ## Delivery rules
 

@@ -209,3 +209,16 @@ Use a consistent problem-details response for errors, for example:
 ```
 
 The error format is implementation guidance; the success response shapes above are the required contract.
+
+## Implementation notes (as built)
+
+- Invalid input is always `400` (never `422`). Malformed IDs (not `c_<32 hex>` / `h_<32 hex>`) are `404`,
+  the same as unknown IDs.
+- Ownership violations are `403`. Repeated cancellation of a cancelled hold is `204`; cancelling a
+  confirmed or expired hold is `409`.
+- Every error body is Problem Details with an extra `code`: `VALIDATION_FAILED`, `INVALID_STUDENT_ID`,
+  `CLASS_NOT_FOUND`, `HOLD_NOT_FOUND`, `HOLD_NOT_OWNED`, `NO_SEATS_AVAILABLE`,
+  `DUPLICATE_ACTIVE_APPLICATION`, `HOLD_EXPIRED`, `HOLD_NOT_ACTIVE`.
+- Additive fields on `GET /holds/{holdId}` and `GET /me/holds`: `className`, `createdAt`,
+  `confirmedAt`, `cancelledAt` (nullable).
+- Timestamps are serialized as `yyyy-MM-ddTHH:mm:ss[.fffffff]Z`; `expiresAt` is whole seconds.

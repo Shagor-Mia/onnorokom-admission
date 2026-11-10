@@ -5,6 +5,13 @@
 > Design system reference: `UI/school_admission_portal_ui/admission_portal/DESIGN.md`
 > API contract reference: `docs/API_CONTRACT.md`
 
+> **Implementation note (what was actually built differs from this early guide):**
+> the assignment PDF wins over this guide. The implemented UI uses plain CSS (no Tailwind), puts the
+> student ID box in the header of every page, uses the PDF's labels ("আবেদন করুন", "ভর্তি ফি দিন",
+> "বাতিল"), has a separate application screen (`/applications/:holdId`), and omits invented content
+> from this guide (government-approval banner, school name, helpline, "PDF download", student name,
+> multi-step class form). Source of truth for behaviour: `frontend/src/` and `docs/ASSUMPTIONS.md`.
+
 ---
 
 ## Tech Stack
