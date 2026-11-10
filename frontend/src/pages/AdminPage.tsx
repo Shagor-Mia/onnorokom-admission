@@ -144,7 +144,7 @@ export function AdminPage() {
 
       {classes.data && (
         <div className="grid gap-gutter xl:grid-cols-12">
-          <section className="card flex flex-col gap-space-md p-space-md xl:col-span-8 md:p-space-lg" aria-labelledby="inventory-heading">
+          <section className="card flex min-w-0 flex-col gap-space-md p-space-md xl:col-span-8 md:p-space-lg" aria-labelledby="inventory-heading">
             <div className="flex flex-col gap-space-sm md:flex-row md:items-start md:justify-between">
               <div>
                 <h2 id="inventory-heading" className="flex items-center gap-space-sm text-headline-sm">

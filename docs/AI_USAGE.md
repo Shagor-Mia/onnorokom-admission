@@ -36,6 +36,11 @@ Every claim of "passing" below comes from commands that were actually run (Docke
 8. **A false alarm from the AI's own check script:** a shell-quoting bug in the curl concurrency check reported
    0 successes. *Caught* because it contradicted the passing automated tests; re-run correctly it showed
    exactly 10 × `201` and 50 × `409`.
+9. **Admin dashboard overflowed on phones** (300 px horizontal scroll at 390 px width: a grid item without
+   `min-width: 0` was stretched by the wide seat table), and the "Day Shift" option produced the Bengali name
+   "Class 6 - দিবা শিফট" instead of the PDF's "Class 6 - Day Shift". Unit tests could not notice either.
+   *Caught* in a manual walkthrough in real Chrome driven by Playwright (every PDF screen/rule, at 390/768/1280 px).
+   *Fixed*; field errors on the create-class form now also clear as soon as the field is edited.
 
 ## Responsibility
 

@@ -22,7 +22,7 @@ const MAX_SEATS = 2_147_483_647;
 export function composeClassName(base: string, shift: Shift): string {
   const name = base.trim();
   if (shift === 'none' || name.length === 0) return name;
-  return `${name} - ${shiftLabels[shift].bn}`;
+  return `${name} - ${shiftLabels[shift].en}`;
 }
 
 export interface FormErrors {
@@ -69,9 +69,14 @@ export function CreateClassPage() {
   const seatsNumber = /^[0-9]+$/.test(totalSeats.trim()) ? Number(totalSeats.trim()) : 0;
   const errorList = [errors.name, errors.totalSeats].filter(Boolean) as string[];
 
+  // Editing a field clears its stale error, so the summary/badge never contradict the current input.
+  const clearError = (field: keyof FormErrors) =>
+    setErrors((current) => (current[field] ? { ...current, [field]: undefined } : current));
+
   const changeSeats = (delta: number) => {
     const next = Math.max(1, (seatsNumber || 0) + delta);
     setTotalSeats(String(next));
+    clearError('totalSeats');
   };
 
   const submit = async (event: FormEvent) => {
@@ -160,7 +165,7 @@ export function CreateClassPage() {
                 maxLength={200}
                 aria-invalid={errors.name ? true : undefined}
                 aria-describedby={errors.name ? `${nameId}-error` : `${nameId}-hint`}
-                onChange={(event) => setBase(event.target.value)}
+                onChange={(event) => { setBase(event.target.value); clearError('name'); }}
               />
               {errors.name ? (
                 <span id={`${nameId}-error`} className="field-error">
@@ -177,7 +182,7 @@ export function CreateClassPage() {
                   <button
                     key={pick}
                     type="button"
-                    onClick={() => setBase(pick)}
+                    onClick={() => { setBase(pick); clearError('name'); }}
                     className={`rounded-lg border px-space-sm py-1 text-label-md ${
                       base === pick ? 'border-primary bg-primary text-on-primary' : 'border-surface-container bg-surface-container-low hover:bg-surface-container'
                     }`}
@@ -207,7 +212,7 @@ export function CreateClassPage() {
                         name="shift"
                         value={value}
                         checked={shift === value}
-                        onChange={() => setShift(value)}
+                        onChange={() => { setShift(value); clearError('name'); }}
                         className="h-4 w-4 accent-[#006a61]"
                       />
                     </span>
@@ -228,7 +233,7 @@ export function CreateClassPage() {
                       name="shift"
                       value="none"
                       checked={shift === 'none'}
-                      onChange={() => setShift('none')}
+                      onChange={() => { setShift('none'); clearError('name'); }}
                       className="h-4 w-4 accent-[#006a61]"
                     />
                   </span>
@@ -257,7 +262,7 @@ export function CreateClassPage() {
                     placeholder="120"
                     aria-invalid={errors.totalSeats ? true : undefined}
                     aria-describedby={errors.totalSeats ? `${seatsId}-error` : undefined}
-                    onChange={(event) => setTotalSeats(event.target.value)}
+                    onChange={(event) => { setTotalSeats(event.target.value); clearError('totalSeats'); }}
                   />
                   <button type="button" className="btn-outline w-12 px-0" aria-label="Seat সংখ্যা ১ বাড়ান" onClick={() => changeSeats(1)}>
                     <Icon name="add" />

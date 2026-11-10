@@ -219,7 +219,8 @@ describe('AdminPage', () => {
 
 describe('CreateClassPage', () => {
   it('composes the class name from the shift choice', () => {
-    expect(composeClassName('Class 6', 'morning')).toBe('Class 6 - প্রভাতি শিফট');
+    expect(composeClassName('Class 6', 'morning')).toBe('Class 6 - Morning Shift');
+    expect(composeClassName('Class 6', 'day')).toBe('Class 6 - Day Shift');
     expect(composeClassName('Class 6 - Day Shift', 'none')).toBe('Class 6 - Day Shift');
   });
 
